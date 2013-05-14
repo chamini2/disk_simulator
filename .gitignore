@@ -4,3 +4,9 @@
 *.jar
 *.war
 *.ear
+
+# Editores
+*.swp
+
+# Archivos de sistema
+.DS_Store # OS X
