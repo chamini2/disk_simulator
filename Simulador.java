@@ -5,13 +5,26 @@ public class Simulador {
 
     }
 
-    private  buscarSectorParaBloque() {
+    private int buscarSectorParaBloque(int bloque) {
 
     }
 
-    private 
+    private long getLatency(Peticion p) {
 
-    public static void main (String [] args)
-    {
+    }
+
+    private sectorToTrack(int sector) {
+
+    }
+
+    private long moveCabezal(int track) {
+
+    }
+
+    private long getTiempo (int tipo) {
+
+    }
+
+    public static void main (String [] args) {
     }
 }

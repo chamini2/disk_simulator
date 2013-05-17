@@ -10,7 +10,10 @@ public class Disco {
     int rpm;
     int tfreno;
     int tarranque;
-    int velocidad;
     int tasaLectura;
     int tasaEscritura;
+
+    public Disco() {
+
+    }
 }
