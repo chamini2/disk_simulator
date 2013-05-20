@@ -32,9 +32,10 @@ def generate_list(bytes, pets, time, max_bl):
 
     return list
 
-# Receives a list of tuples (priority, time, [blocks], type)
+# Receives a list of tuples
+# (priority, time, [blocks], type)
 def generate_xml(list, bytes):
-    xml      = "<begin>\n"
+    xml      = "<xml>\n"
     disk_tag = "<disk>" + str(bytes) + "</disk>\n"
 
     def spaces(level):
@@ -73,7 +74,7 @@ def generate_xml(list, bytes):
     for pet in list:
         xml += pet_tag(pet[0], pet[1], pet[2], pet[3], 1) + '\n'
 
-    xml += "<end>\n"
+    xml += "</xml>\n"
     return xml
 
 
