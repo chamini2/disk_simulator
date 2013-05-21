@@ -2,53 +2,64 @@ import java.util.LinkedList;
 
 public class Peticion {
     private int tiempo;                     //  Momento en que se hizo la peticion
-    private LinkedList<Integer> bloques;    //  bloques a leer
-    private boolean tipo;                   //  tipo de peticion (lectura => true, escritura => false)
-    private Prio prioridad;                 //  tipo de priorida
+    private LinkedList<Integer> bloques;    //  bloque inicial
+    private char tipo;                      //  tipo de peticion (Lectura o escritura)
+    private Prio prioridad;                 //  tipo de prioridad
 
     private enum Prio {
         RT, BE, IDLE
     }
 
     public Peticion(int tiempo, String tipo, String prioridad) {
-      this.tiempo = tiempo;
+        this.tiempo = tiempo;
 
-      if (tipo.equals("R"))
-        this.tipo = true;
-      else
-        this.tipo = false;
+        if (tipo.equals("R"))
+            this.tipo = 'R';
+        else
+            this.tipo = 'W';
 
-      if (prioridad.equals("RT")) {
-        this.prioridad = Prio.RT;
-      } else if (prioridad.equals("BE")) {
-        this.prioridad = Prio.BE;
-      } else {
-        this.prioridad = Prio.IDLE;
-      }
+        if (prioridad.equals("RT"))
+            this.prioridad = Prio.RT;
+        else if (prioridad.equals("BE"))
+            this.prioridad = Prio.BE;
+        else
+            this.prioridad = Prio.IDLE;
 
-      this.bloques = new LinkedList<Integer>();
+        this.bloques = new LinkedList<Integer>();
+    }
+
+    public int getTiempo() {
+        return this.tiempo;
+    }
+
+    public LinkedList<Integer> getBloques() {
+        return this.bloques;
+    }
+
+    public char getTipo() {
+        return this.tipo;
     }
 
     public void addBloque(int bloque) {
-
-      this.bloques.add(bloque);
+        this.bloques.add(bloque);
     }
 
     @Override
     public String toString() {
-      String str = "(";
+        String str = "(";
 
-      str += tiempo + ", ";
-      str += prioridad + ", ";
+        str += tiempo + ", ";
+        str += prioridad + ", ";
 
-      if (tipo)
-        str += "R, ";
-      else
-        str += "W, ";
+        if (tipo == 'R')
+            str += "R, ";
+        else
+            str += "W, ";
 
-      str += bloques.toString() + ")";
+        str += bloques.toString() + ")";
 
-      return str;
+        return str;
     }
+
 }
 

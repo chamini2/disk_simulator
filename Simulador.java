@@ -1,6 +1,9 @@
+import java.util.LinkedList;
+import java.util.Collections;
+
 public class Simulador {
     Disco d;
-    static int tamano_bloque = 4096;
+    static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
 
     public Simulador(Disco d) {
         this.d = d;
@@ -8,47 +11,37 @@ public class Simulador {
 
     private Disco parseDisco(String archivo_config) {
         //  Matteo
+        return null;
     }
 
     private int buscarSectorParaBloque(int bloque) {
         return (bloque * 8) + 1;
     }
 
-    private Cabezal buscarCabezal(int sector) {
-        for (Cabezal c: d.cabezales) {
-            if (c.min <= sector && sector < c.max)
-                return c;
-        }
-    }
+    private long getHandleTime(Peticion p) {
+        int total = 0;
 
-    private long getLatency(Peticion p) {
-        int total;
-
-        LinkedList<int> sectores_pendientes = new LinkedList<int>();
-        int num_sector;
-        for (int b: p.bloques) {
-            num_sector = buscarSectorParaBloque(p.inicial);
-            sectores_pendientes.add(num_sector);
+        LinkedList<Integer> dispatch_queue = new LinkedList<Integer>();
+        Integer sector;
+        for (Integer b: p.getBloques()) {
+            sector = buscarSectorParaBloque(b);
+            dispatch_queue.add(sector);
         }
 
-        Collections.sort(sectores_pendientes);
+        Collections.sort(dispatch_queue);
 
-        long tiempo_por_sector = 0;
-        for (int sector: sectores_pendientes) {
-            tiempo_por_sector += moveCabezal(buscarCabezal(sector));    
-            tiempo_por_sector += procesarSector(sector);    
-            total += tiempo_por_sector;
+        int trackAux;
+        for (int sectorAux: dispatch_queue) {
+            Cabezal c = d.buscarCabezal(sectorAux);
+            trackAux = buscarTrackParaSector(sectorAux);
+            total += d.moverBrazo(trackAux);
+            total += d.procesarSector(sectorAux, p.getTipo());    
         }
-        return aux1 + aux2;
+        return total;
     }
 
-    private int sectorToTrack(int sector) {
-    }
-
-    private long moveCabezal(Cabezal c, int track) {
-        
-    }
-
-    private long getTiempo (int tipo) {
+    private int buscarTrackParaSector(int sector) {
+        //  PENDIENTE
+        return 0;
     }
 }
