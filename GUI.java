@@ -22,7 +22,7 @@ public class GUI extends JFrame {
         DefaultCaret caret;
 
         /*Panel general*/
-        contentPane = new Board(TBP);
+        contentPane = new Board(TBP, 150);
         contentPane.setPreferredSize(new Dimension(900, 700));
         setContentPane(contentPane);
 
