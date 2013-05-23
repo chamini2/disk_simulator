@@ -10,15 +10,17 @@ public class Board extends JPanel {
     private AffineTransform at;
     private int track;
     private int TBP;
-
-    public Board(int TBP){
+    private int sectores;
+    
+    public Board(int TBP, int sectores){
         super(null);
         setBackground(Color.WHITE);
-        this.track   = 3; //Pista pintada por default
-        this.disco   = 1;
-        this.sector  = 1;
-        this.cabezal = 1;
-        this.TBP     = TBP;
+        this.track    = 3; //Pista pintada por default
+        this.disco    = 1;
+        this.sector   = 1;
+        this.cabezal  = 1;
+        this.TBP      = TBP;
+        this.sectores = sectores; 
     }
 
     public int getTrack(){
@@ -73,14 +75,19 @@ public class Board extends JPanel {
         /*Se crea un transformador de formas para tener mas precision sobre ellas*/
         this.at = AffineTransform.getTranslateInstance(w / 2, h / 2);
 
+
+        g2.setColor(Color.gray);
         densidad = 350.0 / this.TBP;
         /*Ciclo que crea el plato del disco duro*/
-        for(r = 350, x=-400, y=-300; r > 0; r-=densidad, x+= densidad / 2, y+= densidad / 2){
+        for(r = 350, x=-400, y=-300; 
+                r > 0; r-=densidad, x+= densidad / 2, y+= densidad / 2){
             arc = new Arc2D.Double(x,y,r,r,0,360,1);
             g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
 
         }
 
+
+        
         pintarCilindro(this.track);
 
         /*Identificadores de disco, sector y cabezal en la interfaz*/
@@ -101,6 +108,16 @@ public class Board extends JPanel {
 
         }
 
+        /*Linea para el grafo*/
+        g2.drawString("0", 492, 40);
+        g2.drawString(""+this.sectores, 794, 40);
+        line = new Line2D.Double(45, -300, 45, -305);
+        g2.draw(at.createTransformedShape(line));
+        line = new Line2D.Double(350, -300, 350, -305);
+        g2.draw(at.createTransformedShape(line));
+        line = new Line2D.Double(45, -300, 350, -300);
+        g2.draw(at.createTransformedShape(line));
+
         /*Se pinta el disco actual en la leyenda*/
         this.pintarDisco(this.disco, Color.blue);
         /*Para seleccionar el segundo disco, se pinta el primero de blanco*/
@@ -114,6 +131,17 @@ public class Board extends JPanel {
 
         /*Pinta el brazo actual*/
         this.pintarBrazo(this.cabezal);
+
+        /*Guia para sector actual*/
+        g2.setColor(Color.orange);
+        g2.setComposite(AlphaComposite.getInstance(
+                                AlphaComposite.SRC_OVER, 0.3f));
+        /*Area leida en el disco (sector actual)*/
+        for (i = -250; i <= -200; ++i){
+            line = new Line2D.Double(-225, -125, i, -300);
+            g2.draw(at.createTransformedShape(line));
+
+        }
 
     }
 
@@ -138,6 +166,7 @@ public class Board extends JPanel {
         Line2D line;
         int brazo, y0, y1, limite;
 
+        /*Transformacion de cabezal a brazo*/
         switch (cabezal){
             case 1:
                 brazo = 1;
@@ -160,6 +189,7 @@ public class Board extends JPanel {
         limite = y0 + 10;
         y1 = y0 + 20;
 
+        /*Pinta el brazo*/
         for ( ; y0 <= limite; ++y0){
             line = new Line2D.Double(-330, y0 , -150, y1);
             g2.draw(at.createTransformedShape(line));
@@ -179,8 +209,11 @@ public class Board extends JPanel {
         /*Se setea el color de relleno*/
         g2.setColor(Color.yellow);
         /*Ciclo que llena entre un track*/
-        for(r = track*densidad, x=-400 + (this.TBP - track)*(densidad / 2), y=-300 + (this.TBP - track)*(densidad / 2);
-                r > track*densidad - densidad + 0.1; r-=1, x+= 0.5, y+=0.5){
+        for(r = track*densidad, 
+                x=-400 + (this.TBP - track)*(densidad / 2), 
+                y=-300 + (this.TBP - track)*(densidad / 2); 
+                r > track*densidad - densidad + 0.1;
+                r-=1, x+= 0.5, y+=0.5){
             arc = new Arc2D.Double(x,y,r,r,0,360,1);
             g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
                 }
