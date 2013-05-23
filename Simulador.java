@@ -14,18 +14,18 @@ import java.io.File;
 public class Simulador {
     Disco d;
     static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
+    List<Peticion> peticiones; //
 
-	List<Peticion> peticiones; //  
-
-    public Simulador(Disco d) {
+    public Simulador(String file_disk, String file_petitions) {
         this.d = d;
-		this.peticiones = null;
+        this.peticiones = null;
+
     }
 
-    //private Disco parseDisco(String archivo_config) {
-        ////  Matteo
-        //return null;
-    //}
+    private Disco leerDisco(String archivo_config) {
+        //  Matteo
+        return null;
+    }
 
     /*
      * Modifica la variable 'peticiones'
@@ -84,9 +84,8 @@ public class Simulador {
         }
     }
 
-
     /**
-      * Dado un numero de bloque devuelve el tiempo tomado por el disco duro 
+      * Dado un numero de bloque devuelve el tiempo tomado por el disco duro
       * para leer o escribir dicho bloque
       */
     private long procesarBloque(int bloque, char tipo) {
@@ -94,21 +93,21 @@ public class Simulador {
         return d.procesarSector(sector, tipo);
     }
 
-    //private long getHandleTime(Peticion p) {
-        //int total = 0;
+    // private long getHandleTime(Peticion p) {
+    //     int total = 0;
 
-        //List<Integer> dispatchQueue = new LinkedList<Integer>();
-        //Integer sector;
-        //for (Integer b: p.getBloques()) {
-            //sector = buscarSectorParaBloque(b);
-            //dispatchQueue.add(sector);
-        //}
+    //     List<Integer> dispatchQueue = new LinkedList<Integer>();
+    //     Integer sector;
+    //     for (Integer b: p.getBloques()) {
+    //         sector = buscarSectorParaBloque(b);
+    //         dispatchQueue.add(sector);
+    //     }
 
-        //Collections.sort(dispatchQueue);
+    //     Collections.sort(dispatchQueue);
 
-        //for (int sectorAux: dispatchQueue) {
-            //total += d.procesarSector(sectorAux, p.getTipo());
-        //}
-        //return total;
-    //}
+    //     for (int sectorAux: dispatchQueue) {
+    //         total += d.procesarSector(sectorAux, p.getTipo());
+    //     }
+    //     return total;
+    // }
 }

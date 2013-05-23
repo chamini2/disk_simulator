@@ -31,7 +31,7 @@ public class GUI extends JFrame {
         textArea.setEditable(false);
         caret = (DefaultCaret) textArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        scrollPaneLog = new JScrollPane(textArea, 
+        scrollPaneLog = new JScrollPane(textArea,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPaneLog.setBounds(490, 400, 350, 270);
@@ -41,7 +41,7 @@ public class GUI extends JFrame {
         this.grafo = new Grafico(150);
         this.grafo.setPreferredSize(new Dimension(340, 260));
         this.grafo.setBackground(Color.WHITE);
-        scrollPaneGr = new JScrollPane(grafo, 
+        scrollPaneGr = new JScrollPane(grafo,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPaneGr.setBounds(490, 100, 360, 270);
@@ -54,7 +54,7 @@ public class GUI extends JFrame {
         setVisible(true);
     }
 
-    
+
     /*Aumenta el tamaño del panel del grafo para el scroll*/
     private void aumentarGrafo(){
         int w, h, y;
@@ -75,44 +75,44 @@ public class GUI extends JFrame {
 
 /*Metodos publicos para manipular interfaz*/
 
-/*Pinta un punto en el grafo de peticiones, y si hay alguna anterior, los une con un vector*/
-public void pintarPeticion(int sector){
-    this.grafo.agregarPunto(sector);
-    if (this.grafo.getPunto() != null) {
-        if (this.grafo.getPunto().getY() >= 250){
-            this.aumentarGrafo();
+    /*Pinta un punto en el grafo de peticiones, y si hay alguna anterior, los une con un vector*/
+    public void pintarPeticion(int sector){
+        this.grafo.agregarPunto(sector);
+        if (this.grafo.getPunto() != null) {
+            if (this.grafo.getPunto().getY() >= 250){
+                this.aumentarGrafo();
+            }
         }
+        this.grafo.repaint();
     }
-    this.grafo.repaint();
-}
 
-/*Pinta un track del disco que se ve*/
-public void pintarCilindro(int track){
-    this.contentPane.setTrack(track);
-    this.contentPane.repaint();
-}
+    /*Pinta un track del disco que se ve*/
+    public void pintarCilindro(int track){
+        this.contentPane.setTrack(track);
+        this.contentPane.repaint();
+    }
 
-/*Agrega un registro a la caja del log*/
-public void agregarRegistro(String registro){
-    this.textArea.append(registro+"\n");
-    this.revalidate();
-}
+    /*Agrega un registro a la caja del log*/
+    public void agregarRegistro(String registro){
+        this.textArea.append(registro+"\n");
+        this.revalidate();
+    }
 
-/*Cambia el disco actual de la interfaz*/
-public void cambiarDisco(int disco){
-    this.contentPane.setDisco(disco);
-    this.contentPane.repaint();
-}
+    /*Cambia el disco actual de la interfaz*/
+    public void cambiarDisco(int disco){
+        this.contentPane.setDisco(disco);
+        this.contentPane.repaint();
+    }
 
-/*Cambia el sector actual de la interfaz*/
-public void cambiarSector(int sector){
-    this.contentPane.setSector(sector);
-    this.contentPane.repaint();
-}
+    /*Cambia el sector actual de la interfaz*/
+    public void cambiarSector(int sector){
+        this.contentPane.setSector(sector);
+        this.contentPane.repaint();
+    }
 
-/*Cambia el sector actual de la interfaz*/
-public void cambiarCabezal(int cabezal){
-    this.contentPane.setCabezal(cabezal);
-    this.contentPane.repaint();
-}
+    /*Cambia el sector actual de la interfaz*/
+    public void cambiarCabezal(int cabezal){
+        this.contentPane.setCabezal(cabezal);
+        this.contentPane.repaint();
+    }
 }

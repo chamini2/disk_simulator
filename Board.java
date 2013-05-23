@@ -10,7 +10,7 @@ public class Board extends JPanel {
     private AffineTransform at;
     private int track;
     private int TBP;
-    
+
     public Board(int TBP){
         super(null);
         setBackground(Color.WHITE);
@@ -80,7 +80,7 @@ public class Board extends JPanel {
             g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
 
         }
-        
+
         pintarCilindro(this.track);
 
         /*Identificadores de disco, sector y cabezal en la interfaz*/
@@ -90,7 +90,7 @@ public class Board extends JPanel {
         g2.drawString(""+sector, 410, 50);
         g2.drawString("Cabezal:", 350, 70);
         g2.drawString(""+cabezal, 410, 70);
-    
+
         /*Caja para log*/
         g2.drawString("Registro", 490, 395);
 
@@ -98,7 +98,7 @@ public class Board extends JPanel {
         for (i = 100; i < 150; i += 25){
             arc = new Arc2D.Double(-300,i,250,50,0,360,1);
             g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
-        
+
         }
 
         /*Se pinta el disco actual en la leyenda*/
@@ -111,7 +111,7 @@ public class Board extends JPanel {
         this.dibujarBrazo(1);
         this.dibujarBrazo(2);
         this.dibujarBrazo(3);
-        
+
         /*Pinta el brazo actual*/
         this.pintarBrazo(this.cabezal);
 
@@ -146,7 +146,7 @@ public class Board extends JPanel {
             case 2:
                 brazo = 2;
                 break;
-            
+
             case 3:
                 brazo = 2;
                 break;
@@ -179,7 +179,7 @@ public class Board extends JPanel {
         /*Se setea el color de relleno*/
         g2.setColor(Color.yellow);
         /*Ciclo que llena entre un track*/
-        for(r = track*densidad, x=-400 + (this.TBP - track)*(densidad / 2), y=-300 + (this.TBP - track)*(densidad / 2); 
+        for(r = track*densidad, x=-400 + (this.TBP - track)*(densidad / 2), y=-300 + (this.TBP - track)*(densidad / 2);
                 r > track*densidad - densidad + 0.1; r-=1, x+= 0.5, y+=0.5){
             arc = new Arc2D.Double(x,y,r,r,0,360,1);
             g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
@@ -194,7 +194,7 @@ public class Board extends JPanel {
 
         g2.setColor(color);
         /*Ciclo que pinta el disco 'disco'*/
-        for (w = 250, h = 50, x = -300, y = 75 + 25 * disco; 
+        for (w = 250, h = 50, x = -300, y = 75 + 25 * disco;
                 w > 0; w -= 1, h -= 1, x += 0.5, y += 0.5){
             arc = new Arc2D.Double(x,y,w,h,0,360,1);
             g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
