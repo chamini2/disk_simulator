@@ -35,20 +35,23 @@ public class Grafico extends JPanel {
     
     /*Metodo que pinta los puntos del arraylist*/
     private void pintarPuntos(){
-        int x, y;
+        int x, y, i, length;
         Punto anterior = null;
 
-        for (Punto p : this.puntosR){
-            x = p.getX();
-            y = p.getY();
-            g2.drawString(""+p.getSector(), x, y-5);
+        length = this.puntos.size();
+
+        for (i = 0; i < length; ++i) {
+            x = this.puntos.get(i).getX();
+            y = 15 + (length - (i + 1)) * 15;
+            this.puntos.get(i).setY(y);
+            g2.drawString(""+this.puntos.get(i).getSector(), x, y-5);
             g2.setColor(Color.blue);
             g2.fillOval(x,y,5,5);
             if (anterior != null){
 
-                this.contectarPuntos(anterior, p);
+                this.contectarPuntos(anterior, this.puntos.get(i));
             }
-            anterior = p;
+            anterior = this.puntos.get(i);
 
         }
         g2.setColor(Color.gray);
@@ -112,15 +115,10 @@ public class Grafico extends JPanel {
 
         /*Se calcula la posicion del sector*/
         x = sector * this.sectores; 
-
-        if (this.punto != null){
-            y = this.punto.getY() + 10;
-        } else {
-            y = 15;
-        }
-
+        y = this.puntos.size();     //El indice en el cual fue agregado el punto
         p = new Punto(x,y,sector);
-        this.punto = p;
+        if (y == 0)
+            this.punto = p;
         this.puntos.add(p);
     }
 

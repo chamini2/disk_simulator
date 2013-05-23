@@ -67,7 +67,9 @@ public class GUI extends JFrame {
         h = (int) d.getHeight();
 
         this.grafo.setPreferredSize(new Dimension(w, h+10));
+
         this.grafo.revalidate();
+        this.revalidate();
     }
 
 

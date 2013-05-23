@@ -19,7 +19,13 @@ public class Punto{
         return this.y;
     }
 
+
     public int getSector(){
         return this.sector;
+    }
+
+    /*Setters*/
+    public void setY(int y){
+        this.y = y;
     }
 }
