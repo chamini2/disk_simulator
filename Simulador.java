@@ -12,8 +12,9 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 public class Simulador {
+
     Disco d;
-    static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
+    static int tamanoBloque = 4096;    //  Tamano de bloques de ext4
 
 	List<Peticion> peticiones; //  
 
@@ -22,15 +23,19 @@ public class Simulador {
 		this.peticiones = null;
     }
 
-    //private Disco parseDisco(String archivo_config) {
-        ////  Matteo
-        //return null;
-    //}
+    /**
+      * Parsea la informacion de un disco duro definida en un archivo
+      * de configuracion 
+      */
+    private Disco parseDisco(String archivoConfig) {
+        //  Matteo
+        return null;
+    }
 
     /*
      * Modifica la variable 'peticiones'
      */
-    public void leerPeticiones(String xml) {
+    private void leerPeticiones(String xml) {
 
         try {
             File file = new File(xml);
@@ -84,10 +89,9 @@ public class Simulador {
         }
     }
 
-
     /**
-      * Dado un numero de bloque devuelve el tiempo tomado por el disco duro 
-      * para leer o escribir dicho bloque
+      * Dado un numero de bloque del sistema de archivos devuelve el tiempo
+      * tomado por el disco duro para leer o escribir dicho bloque
       */
     private long procesarBloque(int bloque, char tipo) {
         int sector = d.buscarSectorParaBloque(bloque);
