@@ -6,13 +6,13 @@ public class Disco {
     int capacidadDisco;             //  Tamano en bytes del disco duro
     int numPlatos;                  //  Numero de platos del disco duro
     int tamanoSector;               //  Tamano en bytes de cada sector del dd
-    int numCilindros;               //  Numero de cilindros 
+    int numCilindros;               //  Numero de cilindros
     List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
     int trackActual;                //  Track actual en la que esta posicionado el brazo
 
-    //  
+    //
     int averageSeekTime;            //  Tiempo promedio de mover el cabezal de un track al siguiente
-    int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos 
+    int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos
     int tasaEscritura;              //  tasa promedio de escritura del disco duro MB / milisegundos
 
     int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
@@ -24,7 +24,7 @@ public class Disco {
     /**
       * Constructor
       */
-    public Disco(int cd, int np, int ts, int ntpp, int ast, 
+    public Disco(int cd, int np, int ts, int ntpp, int ast,
                  int tl, int te, int dp, int rpm) {
         this.capacidadDisco = cd;
         this.numPlatos = np;
@@ -39,7 +39,7 @@ public class Disco {
     }
 
     /**
-      * Devuelve el numero de pista sobre la cual se encuentra el brazo del 
+      * Devuelve el numero de pista sobre la cual se encuentra el brazo del
       * disco actualmente
       */
     public int getTrackActual() {
@@ -90,7 +90,7 @@ public class Disco {
         else if (tipo == 'w')
             total = tamanoSector / tasaEscritura;
         else
-            System.out.println("Disco.efectuarAccion Error peticion mal definida");
+            System.out.println("Disco.efectuarAccion: Error peticion mal definida");
         return total;
     }
 
