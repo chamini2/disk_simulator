@@ -13,8 +13,12 @@ import java.io.File;
 public class Simulador {
 
     Disco d;
+<<<<<<< HEAD
     static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
     PriorityQueue<Peticion> peticiones; //
+=======
+    static int tamanoBloque = 4096;    //  Tamano de bloques de ext4
+>>>>>>> 9c60e28f6b3b7194826fab44a0d648c233fa1bec
 
     public Simulador(String file_disk, String file_petitions) {
         this.d = leerDisco();
@@ -22,11 +26,15 @@ public class Simulador {
 
     }
 
-	/*
-     * Parsea la informacion de un disco duro definida en un archivo
-     * de configuracion 
-     */
+<<<<<<< HEAD
     private Disco leerDisco(String archivo_config) {
+=======
+    /**
+      * Parsea la informacion de un disco duro definida en un archivo
+      * de configuracion 
+      */
+    private Disco parseDisco(String archivoConfig) {
+>>>>>>> 9c60e28f6b3b7194826fab44a0d648c233fa1bec
         //  Matteo
         return null;
     }
@@ -34,7 +42,11 @@ public class Simulador {
     /*
      * Modifica la variable 'peticiones'
      */
+<<<<<<< HEAD
     public PriorityQueue<Peticion> leerPeticiones(String xml) {
+=======
+    private void leerPeticiones(String xml) {
+>>>>>>> 9c60e28f6b3b7194826fab44a0d648c233fa1bec
 
         try {
             File file = new File(xml);
@@ -87,12 +99,16 @@ public class Simulador {
         } catch (Exception e) {
             e.printStackTrace();
         }
-		return lista;
     }
 
     /**
+<<<<<<< HEAD
+      * Dado un numero de bloque devuelve el tiempo tomado por el disco duro
+      * para leer o escribir dicho bloque
+=======
       * Dado un numero de bloque del sistema de archivos devuelve el tiempo
       * tomado por el disco duro para leer o escribir dicho bloque
+>>>>>>> 9c60e28f6b3b7194826fab44a0d648c233fa1bec
       */
     private long procesarBloque(int bloque, char tipo) {
         int sector = d.buscarSectorParaBloque(bloque);
