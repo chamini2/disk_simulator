@@ -1,11 +1,13 @@
+import java.lang.Comparable;
+
 import java.util.List;
 import java.util.LinkedList;
 
-public class Peticion {
+public class Peticion implements Comparable<Peticion>{
     private int tiempo;                 //  Momento en que se hizo la peticion
     private List<Integer> bloques;      //  bloque inicial
     private char tipo;                  //  tipo de peticion (Lectura o escritura)
-    private Prio prioridad;             //  tipo de prioridad 
+    private Prio prioridad;             //  tipo de prioridad
 
     private enum Prio {
         RT, BE, IDLE
@@ -60,6 +62,25 @@ public class Peticion {
         str += bloques.toString() + ")";
 
         return str;
+    }
+
+    @Override
+    public int compareTo(T o) {
+
+        Peticion p;
+        if (o instanceof Peticion) {
+            p = (Peticion) o;
+
+            if (this.tiempo > p.tiempo) {
+                return 1;
+            } else if (this.tiempo < p.tiempo) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 
 }

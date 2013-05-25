@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Collections;
 
 // Imports para lectura facil de XML
@@ -14,11 +13,11 @@ import java.io.File;
 public class Simulador {
     Disco d;
     static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
-    List<Peticion> peticiones; //
+    PriorityQueue<Peticion> peticiones; //
 
     public Simulador(String file_disk, String file_petitions) {
-        this.d = d;
-        this.peticiones = null;
+        this.d = leerDisco();
+        this.peticiones = leerPeticiones();
 
     }
 
@@ -30,7 +29,7 @@ public class Simulador {
     /*
      * Modifica la variable 'peticiones'
      */
-    public void leerPeticiones(String xml) {
+    public PriorityQueue<Peticion> leerPeticiones(String xml) {
 
         try {
             File file = new File(xml);
@@ -41,7 +40,8 @@ public class Simulador {
             Element petE, blE;
             Node pet, bl;
 
-            this.peticiones = new ArrayList<Peticion>();
+            PriorityQueue<Peticion> lista = new PriorityQueue<Peticion>();
+
             Peticion in;
             String prioridad, tipo;
             int tiempo, bloque;
@@ -76,7 +76,7 @@ public class Simulador {
                         in.addBloque(bloque);
                     }
 
-                    peticiones.add(in);
+                    lista.add(in);
                 }
             }
         } catch (Exception e) {
