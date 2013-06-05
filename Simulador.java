@@ -12,25 +12,69 @@ import java.io.File;
 
 public class Simulador {
 
-    private Disco d;
-    private static final int tamano_bloque = 4096;    //  Tamano de bloques de ext4
+    private Disco disco;
+    private static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
+
     PriorityQueue<Peticion> peticiones; //
+    List<Accion> bloques;              //  Bloques a leer
 
     /**
       *
       */
     public Simulador(String file_disk, String file_petitions) {
-        this.d = leerDisco();
-        this.peticiones = leerPeticiones();
 
+        this.disco = leerDisco();
+        this.peticiones = leerPeticiones();
+        this.bloques = new ArrayList<Accion>();
+    }
+
+    public void algoritmo() {
+
+        Accion acc;
+        long tiempo = 0;
+
+        while ((!peticiones.isEmpty()) && (!bloques.isEmpty())) {
+
+            /* Si hay bloques que leer/escribir */
+            if (!bloques.isEmpty()) {
+
+                acc = bloques.remove(0);
+                tiempo += this.procesarBloque(acc.getBloque(), acc.getTipo());
+
+            }
+        }
+    }
+
+    public int getClosestBlock() {
+
+        int track = disco.getTrackActual();
+        int distancia = disco.getNumCilindros();
+        int minimo = track;
+        int act;
+        Accion este;
+
+        // Busco el bloque en el track mas cercano
+        for (int i = 0; i < bloques.getLength(); i++) {
+            este = disco.buscarSectorParaBloque(bloques[i]);
+            act = disco.buscarTrackParaSector(este.getBloque());
+
+            act = Math.abs(act - track);
+
+            if (act < distancia) {
+                distancia = act;
+                minimo = i;
+            }
+        }
+
+        return i;
     }
 
 	/*
      * Parsea la informacion de un disco duro definida en un archivo
-     * de configuracion 
+     * de configuracion
      */
     private Disco leerDisco(String archivo_config) {
-        //  Matteo
+
         return null;
     }
 

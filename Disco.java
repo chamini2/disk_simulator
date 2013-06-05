@@ -13,9 +13,10 @@ public class Disco {
 
     //  Variables de performance del disco
     int averageSeekTime;            //  Tiempo promedio de mover el cabezal de un track al siguiente
-    int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos 
+    int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos
     int tasaEscritura;              //  tasa promedio de escritura del disco duro MB / milisegundos
 
+    int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
     int sectoresPorTrack;           //  Cantidad de sectores existentes en cada track del disco duro
 
     int rpm;                        //  Revoluciones por minuto de los platos
@@ -38,7 +39,7 @@ public class Disco {
     }
 
     /**
-      * Devuelve el numero de pista sobre la cual se encuentra el brazo del 
+      * Devuelve el numero de pista sobre la cual se encuentra el brazo del
       * disco actualmente
       */
     public int getTrackActual() {
@@ -93,7 +94,7 @@ public class Disco {
             //  Es relativo a la posicion del cabezal
             total = tamanoSector / tasaEscritura;
         else
-            System.out.println("Disco.efectuarAccion Error peticion mal definida");
+            System.out.println("Disco.efectuarAccion: Error peticion mal definida");
         return total;
     }
 
