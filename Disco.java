@@ -16,7 +16,6 @@ public class Disco {
     int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos
     int tasaEscritura;              //  tasa promedio de escritura del disco duro MB / milisegundos
 
-    int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
     int sectoresPorTrack;           //  Cantidad de sectores existentes en cada track del disco duro
 
     int rpm;                        //  Revoluciones por minuto de los platos
@@ -36,6 +35,9 @@ public class Disco {
         this.diametroPlato = dp;
         this.rpm = rpm;
         this.latenciaRotacional = 60 / this.rpm;
+
+        int numSectores = capacidadDisco / tamanoSector;
+        int sectoresPorPlato = numSectores / numCilindros;
     }
 
     /**
@@ -102,8 +104,6 @@ public class Disco {
       *
       */
     private int buscarTrackParaSector(int sector) {
-        //  PENDIENTE
-
         return 0;
     }
 
