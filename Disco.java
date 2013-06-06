@@ -37,7 +37,7 @@ public class Disco {
         this.latenciaRotacional = 60 / this.rpm;
 
         int numSectores = capacidadDisco / tamanoSector;
-        int sectoresPorPlato = numSectores / numCilindros;
+        int sectoresPorPlato = numSectores / (numPlatos * 2);
     }
 
     /**
