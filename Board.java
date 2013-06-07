@@ -203,7 +203,8 @@ public class Board extends JPanel {
     /*Pinta un cilindro de un color*/
     private void pintarCilindro(int track){
         double r,x,y,densidad;
-
+        
+        track = track / 20;
         densidad = 350.0 / this.TBP;
         Arc2D arc;
 
