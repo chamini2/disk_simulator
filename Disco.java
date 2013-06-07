@@ -12,7 +12,6 @@ public class Disco {
     final int sectoresPorCara;            //  Numero 
     final int sectoresPorTrack;
     final int rpm;                        //  Revoluciones por minuto de los platos
-    final int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
     //  Variables de performance del disco
     int averageSeekTime;                  //  Tiempo promedio de mover el cabezal de un track al siguiente
     int tasaLectura;                      //  tasa promedio de lectura del disco duro MB / milisegundos
@@ -31,13 +30,12 @@ public class Disco {
       * Constructor
       */
     public Disco(int cd, int np, int ts, int nc,
-                 int ast, int tl, int te, int dp, int rpm) {
+                 int ast, int tl, int te, int rpm) {
         this.capacidadDisco     = cd;
         this.numPlatos          = np;
         this.tamanoSector       = ts;
         this.numCilindros       = nc;
         this.rpm                = rpm;
-        this.diametroPlato      = dp;
         this.averageSeekTime    = ast;
         this.tasaLectura        = tl / 1000;
         this.tasaEscritura      = te / 1000;
@@ -128,15 +126,16 @@ public class Disco {
     /**
       * Para un numero de sector especifico consigue en que cilindro esta situado dicho sector
       */
-    public int buscarCilindroParaSector(int sector) {
-        return (int) Math.floor(sector / sectoresPorTrack);
+    private int buscarCilindroParaSector(int sector) {
+        int aux = (int) Math.floor(sector / sectoresPorTrack);
+        return (int) Math.floor(aux / numCilindros); 
     }
 
     /**
       *
       */
     public int buscarSectorParaBloque(int bloque) {
-        return (bloque * 8) + 1;
+        return (bloque * 8);
     }
 
     /*Monitor*/
