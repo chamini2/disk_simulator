@@ -79,6 +79,5 @@ public class Peticion implements Comparable<Peticion>{
             return 0;
         }
     }
-
 }
 

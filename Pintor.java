@@ -11,9 +11,21 @@ public class Pintor implements Runnable {
     }
 
     public void run() {
+        int anterior[];
         int values[];
+        boolean b;
+        values = disco.getValues();
+        anterior = values;
         while (true) {
             values = disco.getValues();
+            b = true;
+            for (int i = 0; i < values.length; ++i) 
+                b = b && (anterior[i] == values[i]);
+
+            if (b) {
+                continue;
+            }
+            anterior = values;
             if (!this.lienzo.refreshInterface(values)) {
                 break;
             }

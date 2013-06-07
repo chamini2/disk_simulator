@@ -68,6 +68,9 @@ public class Simulador implements Runnable {
                 min = this.getClosestBlock();
                 acc = bloques.remove(min);
                 tiempo = this.procesarBloque(acc.getBloque(), acc.getTipo(),p);
+                tiempo *= this.reloj.getTicker();
+                System.out.println("DUrmiendo " + tiempo);
+                System.out.println("ticker " + reloj.getTicker());
 
                //Se duerme para simular tiempo
                 try {
