@@ -6,16 +6,16 @@ public class Disco {
     int capacidadDisco;             //  Tamano en bytes del disco duro
     int numPlatos;                  //  Numero de platos del disco duro
     int tamanoSector;               //  Tamano en bytes de cada sector del dd
-    int numCilindros;               //  Numero de cilindros
+    int numCilindros;               //  Numero de cilindros 
     List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
     int trackActual;                //  Track actual en la que esta posicionado el brazo
+    int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
 
-    //
+    //  Variables de performance del disco
     int averageSeekTime;            //  Tiempo promedio de mover el cabezal de un track al siguiente
     int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos
     int tasaEscritura;              //  tasa promedio de escritura del disco duro MB / milisegundos
 
-    int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
     int sectoresPorTrack;           //  Cantidad de sectores existentes en cada track del disco duro
 
     int rpm;                        //  Revoluciones por minuto de los platos
@@ -24,18 +24,20 @@ public class Disco {
     /**
       * Constructor
       */
-    public Disco(int cd, int np, int ts, int ntpp, int ast,
+    public Disco(int cd, int np, int ts, int ast, 
                  int tl, int te, int dp, int rpm) {
         this.capacidadDisco = cd;
         this.numPlatos = np;
         this.tamanoSector = ts;
-        this.numTracksPorPlato = ntpp;
         this.averageSeekTime = ast;
-        this.tasaLectura = tasaLectura / 1000;
-        this.tasaEscritura = tasaEscritura / 1000;
+        this.tasaLectura = tl / 1000;
+        this.tasaEscritura = te / 1000;
         this.diametroPlato = dp;
         this.rpm = rpm;
         this.latenciaRotacional = 60 / this.rpm;
+
+        int numSectores = capacidadDisco / tamanoSector;
+        int sectoresPorPlato = numSectores / (numPlatos * 2);
     }
 
     /**
@@ -52,8 +54,8 @@ public class Disco {
       */
     public long procesarSector(int sector, char tipoAccion) {
         long total = 0;
-        Cabezal c = buscarCabezal(sectorAux);
-        int trackAux = buscarTrackParaSector(sectorAux);
+        Cabezal c = buscarCabezal(sector);
+        int trackAux = buscarTrackParaSector(sector);
 
         total += moverBrazo(trackAux);
         total += efectuarAccion(tamanoSector, tipoAccion);
@@ -86,8 +88,12 @@ public class Disco {
     private long efectuarAccion(int tamanoSector, char tipo) {
         long total = 0;
         if (tipo == 'r')
+            //  Calculo del tiempo de lectura del sector
+            //  Es relativo a la posicion del cabezal
             total = tamanoSector / tasaLectura;
         else if (tipo == 'w')
+            //  Calculo del tiempo de escritura del sector
+            //  Es relativo a la posicion del cabezal
             total = tamanoSector / tasaEscritura;
         else
             System.out.println("Disco.efectuarAccion: Error peticion mal definida");
@@ -98,8 +104,6 @@ public class Disco {
       *
       */
     private int buscarTrackParaSector(int sector) {
-        //  PENDIENTE
-
         return 0;
     }
 

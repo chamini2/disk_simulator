@@ -119,7 +119,7 @@ public class Board extends JPanel {
         g2.draw(at.createTransformedShape(line));
 
         /*Se pinta el disco actual en la leyenda*/
-        this.pintarDisco(this.disco, Color.blue);
+        this.pintarDisco(this.disco, Color.red);
         /*Para seleccionar el segundo disco, se pinta el primero de blanco*/
         if (this.disco == 2)
             this.pintarDisco(1, Color.white);

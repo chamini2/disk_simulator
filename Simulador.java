@@ -12,11 +12,15 @@ import java.io.File;
 
 public class Simulador {
 
-    Disco disco;
-    static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
+    private Disco disco;
+    private static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
+
     PriorityQueue<Peticion> peticiones; //
     List<Accion> bloques;               //  Bloques a leer
 
+    /**
+      *
+      */
     public Simulador(String file_disk, String file_petitions) {
 
         this.disco = leerDisco();
