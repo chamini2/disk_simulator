@@ -99,7 +99,6 @@ public class Simulador {
             Element petE, blE;
             Node pet, bl;
 
-
             Peticion in;
             String prioridad, tipo;
             int tiempo, bloque;
@@ -118,7 +117,7 @@ public class Simulador {
                     prioridad = petE.getElementsByTagName("priority")
                                 .item(0).getTextContent();
                     tiempo = Integer.parseInt(petE.getElementsByTagName("time")
-                                              .item(0).getTextContent());
+                                .item(0).getTextContent());
                     tipo = petE.getElementsByTagName("type")
                            .item(0).getTextContent();
 
