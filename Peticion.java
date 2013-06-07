@@ -35,6 +35,10 @@ public class Peticion implements Comparable<Peticion>{
         return this.tiempo;
     }
 
+    public void setTiempo(int t){
+        this.tiempo = t;
+    }
+
     public List<Integer> getBloques() {
         return this.bloques;
     }
@@ -75,6 +79,5 @@ public class Peticion implements Comparable<Peticion>{
             return 0;
         }
     }
-
 }
 

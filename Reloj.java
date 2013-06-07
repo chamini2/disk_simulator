@@ -17,7 +17,16 @@ public class Reloj implements Runnable {
         return this.tiempo;
     }
 
+    public int getTicker(){
+        return this.ticker;
+    }
+
     public void run() {
+        try{
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            System.out.println("Interrumpido");
+        }
 
         while (true) {
             try {
@@ -26,7 +35,6 @@ public class Reloj implements Runnable {
                 System.out.println("Sleep interrumpido.");
             }
             ++this.tiempo;
-            System.out.println("Tiempo: "+this.tiempo);
         }
     }
 }

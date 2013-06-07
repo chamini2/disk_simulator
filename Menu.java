@@ -156,8 +156,8 @@ public class Menu extends JPanel{
     /*Metodo para pintar el panel con un fondo*/
     @Override 
     protected void paintComponent(Graphics g){
-       /* Image bg;*/
-        //try{
+        Image bg;
+/*        try{*/
             //bg = ImageIO.read(new File("./fondo1toekoms.jpg"));
             //g.drawImage(bg, 0, 0, null);
         //} catch (IOException e) {

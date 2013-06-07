@@ -20,23 +20,25 @@ public class Disco {
     //  Variables de estado del disco duro
     int cilindroActual;             //  Track actual en la que esta posicionado el brazo
     int platoActual;                //  Plato actual para pintar en interfaz
+    int cabezalActual;              // Cabezal actual para pintar en interfaz
+    Peticion actual;
 
     //  Temporal
+    //List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
     float latenciaRotacional;       //  Tiempo promedio de espera para que leer o escribir un sector
-
     /**
       * Constructor
       */
     public Disco(int cd, int np, int ts, int nc,
-                 int ast, int tl, int te, int rpm) {
+                 int ast, int tl, int te, int rpm, int ticker) {
         this.capacidadDisco     = cd;
         this.numPlatos          = np;
         this.tamanoSector       = ts;
         this.numCilindros       = nc;
         this.rpm                = rpm;
         this.averageSeekTime    = ast;
-        this.tasaLectura        = tl * 8;   //  Megabits por segundo
-        this.tasaEscritura      = te * 8;   //  Megabits por segundo
+        this.tasaLectura        = tl * 1000 / ticker;
+        this.tasaEscritura      = te * 1000 / ticker;
 
         int numSectores         = capacidadDisco / tamanoSector;
         this.sectoresPorCara    = numSectores / (numPlatos * 2);
@@ -45,6 +47,17 @@ public class Disco {
         this.latenciaRotacional = 60 / this.rpm;
         this.cilindroActual     = 0;
         this.platoActual        = 0;
+        this.cabezalActual      = 0;
+    }
+
+
+    public String toString(){
+        String s = "Disco"
+            + "capacidad: "+this.capacidadDisco
+            + "sectoresPorCara "+this.sectoresPorCara
+            + "tamanoSector "+this.tamanoSector
+            + "sectoresPorTrack "+this.sectoresPorTrack;
+        return s;
     }
 
     /**
@@ -54,6 +67,7 @@ public class Disco {
     public int getCilindroActual() {
         return this.cilindroActual;
     }
+
 
     /**
       * Devuelve el numero de pista sobre la cual se encuentra el brazo del
@@ -71,6 +85,16 @@ public class Disco {
         this.platoActual = platoActual;
     }
 
+    /**/
+    public int getCabezalActual() {
+        return this.cabezalActual;
+    }
+
+    /**/
+    public void setCabezalActual(int cabezal) {
+        this.cabezalActual = cabezal;
+    }
+
     /**
      * Devuelve el numero de cilindros que tiene el disco
      */
@@ -82,12 +106,18 @@ public class Disco {
       * Toma el numero de un sector del disco duro y consigue el tiempo
       * tomado por el disco duro para leer o escribir sobre el
       */
-    public long procesarSector(int numSector, char tipoAccion) {
+    public long procesarSector(int numSector, char tipoAccion, Peticion p) {
         long total = 0;
+        int cil, plat, cab;
         int trackAux = buscarCilindroParaSector(numSector);
 
-        setPlatoActual((int) Math.floor(numSector / sectoresPorCara));
         total += moverBrazo(trackAux);
+
+        cil = this.getCilindroActual();
+        plat = (int) Math.floor(numSector / (sectoresPorCara * 2));
+        cab = (int) Math.floor(numSector / sectoresPorCara);
+
+        setValues(cil,plat,cab,p);
         total += efectuarAccion(numSector, tipoAccion);
         return total;
     }
@@ -106,11 +136,11 @@ public class Disco {
       */
     private long efectuarAccion(int sector, char tipo) {
         long total = 0;
-        if (tipo == 'r')
+        if (tipo == 'R')
             //  Calculo del tiempo de lectura del sector
             //  Es relativo a la posicion del cabezal
             total = calcularLecturaSector(sector);
-        else if (tipo == 'w')
+        else if (tipo == 'W')
             //  Calculo del tiempo de escritura del sector
             //  Es relativo a la posicion del cabezal
             total = calcularEscrituraSector(sector);
@@ -122,9 +152,9 @@ public class Disco {
     /**
       * Para un numero de sector especifico consigue en que cilindro esta situado dicho sector
       */
-    private int buscarCilindroParaSector(int sector) {
+    public int buscarCilindroParaSector(int sector) {
         int aux = (int) Math.floor(sector / sectoresPorTrack);
-        return (int) Math.floor(aux / numCilindros); 
+        return (int) Math.floor(aux % numCilindros); 
     }
 
     /**
@@ -134,17 +164,27 @@ public class Disco {
         return (bloque * 8);
     }
 
-    /* Monitor */
-    public synchronized void setValues(int cilindroActual, int plato) {
+    /*Monitor*/
+    public synchronized void setValues(int cilindroActual, int plato, int cabezal, Peticion p) {
         this.cilindroActual = cilindroActual;
         this.platoActual    = plato;
+        this.cabezalActual  = cabezal;
+        this.actual         = p;
     }
 
     public synchronized int[] getValues() {
-        int values[] = new int[2];
+        int values[] = new int[4];
 
+        if (this.actual == null) {
+            values[3] = -1;
+        } else if (this.actual.getTiempo() == -1){
+            values[3] = -2;
+        } else {
+            values[3] = this.actual.getTiempo();
+        }
         values[0] = this.cilindroActual;
         values[1] = this.platoActual;
+        values[2] = this.cabezalActual;
 
         return values;
     }
@@ -154,12 +194,12 @@ public class Disco {
       */
     private long calcularLecturaSector(int sector) {
         // TODO
-        return ((tamanoSector * 8) * 8) / tasaLectura;
+        return (this.tamanoSector * 8) * 8 / tasaLectura;
     }
-
 
     private long calcularEscrituraSector(int sector){
         // TODO
-        return ((tamanoSector * 8) * 8) / tasaEscritura;
+        return (this.tamanoSector * 8) * 8 / tasaEscritura;
     }
+
 }

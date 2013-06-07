@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """Generates a XML file with petitions for a IO scheduler simulation"""
 import random
 
@@ -107,7 +108,7 @@ def main(argv = None):
     if argv is None:
         argv = sys.argv
 
-    if len(argv) != 5 && len(argv) != 6:
+    if len(argv) != 5 and len(argv) != 6:
         print "USAGE: python generador.py <bytes> <petitions>",
         print "<time> <maximum blocks> [<read/write>]"
         return
@@ -132,7 +133,7 @@ def main(argv = None):
 
     if len(argv) == 6:
         lean = argv[5]
-        if lean.lower() != 'r' && lean.lower() != 'w':
+        if lean.lower() != 'r' and lean.lower() != 'w':
             print "USAGE: <read/write> must be 'r' or 'w'"
 
 

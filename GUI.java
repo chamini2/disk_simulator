@@ -14,8 +14,10 @@ public class GUI extends JFrame {
     private JScrollPane scrollPaneGr;
     private Menu menu;
     private Simulador simulador;
+    private Disco disco;
 
-    public GUI(int TBP){
+    public GUI(Disco disco){
+        this.disco = disco;
         initMenu();
     }
 
@@ -27,14 +29,10 @@ public class GUI extends JFrame {
         menu.setPreferredSize(new Dimension(900,700));
         menu.setLayout(null);
         setContentPane(menu);
-        start = new JButton("Comenzar Simulación");
+        start = new JButton("Continuar");
         start.addActionListener(new ActionListener () {
             public void actionPerformed(ActionEvent e){
-                System.out.println("Reloj "+menu.getReloj());
-                System.out.println("Diferencia "+menu.getDiferencia());
-                System.out.println("Densidad "+menu.getDensidad());
                 initUI();
-
             }
         });
 
@@ -55,12 +53,40 @@ public class GUI extends JFrame {
     private final void initUI(){
         JScrollPane scrollPaneLog;
         DefaultCaret caret;
+        Dimension tam;
+        final GUI gui = this;
+        JButton start = new JButton("Comenzar Simulación");
+        start.addActionListener(new ActionListener () {
+            public void actionPerformed(ActionEvent e){
+                int values[];
+                int tick      = menu.getReloj();
+                String dif    = menu.getDiferencia();
+                int den       = menu.getDensidad();
+
+                //Aqui se genera el xml con densidad y diferencia
+
+                Reloj reloj   = new Reloj(tick);
+                Simulador s   = new Simulador("./archivo.xml", disco, reloj);
+                Pintor pintor = new Pintor(gui, disco);
+                Thread hReloj = new Thread(reloj, "Hilo de reloj");
+                Thread hSim   = new Thread(s, "Hilo de simulador");
+                Thread h      = new Thread(pintor, "hilo que pinta");
+                hReloj.start();
+                hSim.start();
+                h.start();
+
+            }
+        });
+
 
         /*Panel general*/
-        contentPane = new Board(50, 1000);
+        contentPane = new Board(50, this.disco.getNumCilindros());
         contentPane.setPreferredSize(new Dimension(900, 700));
         setContentPane(contentPane);
 
+        contentPane.add(start);
+        tam = start.getPreferredSize();
+        start.setBounds(100 + (tam.width / 2),600,tam.width,tam.height);
         /*Scrolling panel para log*/
         textArea = new JTextArea();
         textArea.setEditable(false);
@@ -149,5 +175,23 @@ public class GUI extends JFrame {
     public void cambiarCabezal(int cabezal){
         this.contentPane.setCabezal(cabezal);
         this.contentPane.repaint();
+    }
+
+    /*Refresca la interfaz*/
+    public boolean refreshInterface(int values[]) {
+
+
+        if (values[3] == -2) {
+            agregarRegistro("Estadisticas: ");
+            return false;
+        }
+        pintarCilindro(values[0]);
+        cambiarDisco(values[1]);
+        cambiarCabezal(values[2]);
+        if (values[3] != -1) {
+            agregarRegistro("Peticion atendida en tiempo "+values[3]);
+        }
+        pintarPeticion(values[0]);
+        return true;
     }
 }
