@@ -133,9 +133,9 @@ def main(argv = None):
 
     if len(argv) == 6:
         lean = argv[5]
-        if lean.lower() != 'r' and lean.lower() != 'w':
+        if (lean.lower() != 'r' and lean.lower() != 'w' and
+                lean.lower() != 'read' and lean.lower() != 'write'):
             print "USAGE: <read/write> must be 'r' or 'w'"
-
 
     num_bytes = int(num_bytes)
     petitions = int(petitions)
