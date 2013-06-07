@@ -9,7 +9,7 @@ public class Disco {
     final int tamanoSector;               //  Tamano en bytes de cada sector del dd
     final int numCilindros;               //  Numero de cilindros
 
-    final int sectoresPorCara;            //  Numero 
+    final int sectoresPorCara;            //  Numero
     final int sectoresPorTrack;
     final int rpm;                        //  Revoluciones por minuto de los platos
     //  Variables de performance del disco
@@ -18,6 +18,7 @@ public class Disco {
     int tasaEscritura;                    //  tasa promedio de escritura del disco duro MB / milisegundos
 
     //  Variables de estado del disco duro
+    int trackActual;
     int cilindroActual;             //  Track actual en la que esta posicionado el brazo
     int platoActual;                //  Plato actual para pintar en interfaz
     int cabezalActual;              // Cabezal actual para pintar en interfaz
@@ -45,6 +46,7 @@ public class Disco {
         this.sectoresPorTrack   = sectoresPorCara / numCilindros;
 
         this.latenciaRotacional = 60 / this.rpm;
+        this.trackActual        = 0;
         this.cilindroActual     = 0;
         this.platoActual        = 0;
         this.cabezalActual      = 0;
@@ -117,7 +119,7 @@ public class Disco {
         plat = (int) Math.floor(numSector / (sectoresPorCara * 2));
         cab = (int) Math.floor(numSector / sectoresPorCara);
 
-        setValues(cil,plat,cab,p);
+        setValues(cil, plat, cab, p);
         total += efectuarAccion(numSector, tipoAccion);
         return total;
     }
@@ -153,8 +155,8 @@ public class Disco {
       * Para un numero de sector especifico consigue en que cilindro esta situado dicho sector
       */
     public int buscarCilindroParaSector(int sector) {
-        int aux = (int) Math.floor(sector / sectoresPorTrack);
-        return (int) Math.floor(aux % numCilindros); 
+        this.trackActual = (int) Math.floor(sector / sectoresPorTrack);
+        return (int) Math.floor(trackActual % numCilindros);
     }
 
     /**
@@ -170,6 +172,12 @@ public class Disco {
         this.platoActual    = plato;
         this.cabezalActual  = cabezal;
         this.actual         = p;
+
+        System.out.println("[ cilindroActual ] = " + cilindroActual);
+        System.out.println("[ plato          ] = " + plato);
+        System.out.println("[ cabezal        ] = " + cabezal);
+        System.out.println("[ p              ] = " + p);
+
     }
 
     public synchronized int[] getValues() {
@@ -193,12 +201,10 @@ public class Disco {
       *
       */
     private long calcularLecturaSector(int sector) {
-        // TODO
         return (this.tamanoSector * 8) * 8 / tasaLectura;
     }
 
     private long calcularEscrituraSector(int sector){
-        // TODO
         return (this.tamanoSector * 8) * 8 / tasaEscritura;
     }
 

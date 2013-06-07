@@ -47,7 +47,7 @@ public class Simulador implements Runnable {
 
         while (!peticiones.isEmpty()) {
 
-            /*Reviso si la peticion esta en tiempo*/
+            // Reviso si la peticion esta en tiempo
             p = peticiones.peek();
             if (p == null) {
                 break;
@@ -109,15 +109,6 @@ public class Simulador implements Runnable {
         }
 
         return minimo;
-    }
-
-    /*
-     * Parsea la informacion de un disco duro definida en un archivo
-     * de configuracion
-     */
-    private Disco leerDisco(String archivo_config) {
-
-        return null;
     }
 
     /*
@@ -188,21 +179,4 @@ public class Simulador implements Runnable {
         return disco.procesarSector(sector, tipo, p);
     }
 
-    // private long getHandleTime(Peticion p) {
-    //     int total = 0;
-
-    //     List<Integer> dispatchQueue = new LinkedList<Integer>();
-    //     Integer sector;
-    //     for (Integer b: p.getBloques()) {
-    //         sector = buscarSectorParaBloque(b);
-    //         dispatchQueue.add(sector);
-    //     }
-
-    //     Collections.sort(dispatchQueue);
-
-    //     for (int sectorAux: dispatchQueue) {
-    //         total += d.procesarSector(sectorAux, p.getTipo());
-    //     }
-    //     return total;
-    // }
 }
