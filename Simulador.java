@@ -32,13 +32,15 @@ public class Simulador {
 
         Accion acc;
         long tiempo = 0;
+        int min;
 
         while ((!peticiones.isEmpty()) && (!bloques.isEmpty())) {
 
             //Si hay bloques que leer/escribir
             if (!bloques.isEmpty()) {
 
-                acc = bloques.remove(0);
+                min = this.getClosestBlock();
+                acc = bloques.remove(min);
                 tiempo += this.procesarBloque(acc.getBloque(), acc.getTipo());
 
             }

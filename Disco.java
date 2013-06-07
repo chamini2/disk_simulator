@@ -6,7 +6,7 @@ public class Disco {
     int capacidadDisco;             //  Tamano en bytes del disco duro
     int numPlatos;                  //  Numero de platos del disco duro
     int tamanoSector;               //  Tamano en bytes de cada sector del dd
-    int numCilindros;               //  Numero de cilindros 
+    int numCilindros;               //  Numero de cilindros
     List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
     int trackActual;                //  Track actual en la que esta posicionado el brazo
     int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
@@ -24,7 +24,7 @@ public class Disco {
     /**
       * Constructor
       */
-    public Disco(int cd, int np, int ts, int ast, 
+    public Disco(int cd, int np, int ts, int ast,
                  int tl, int te, int dp, int rpm) {
         this.capacidadDisco = cd;
         this.numPlatos = np;
@@ -104,7 +104,7 @@ public class Disco {
       *
       */
     private int buscarTrackParaSector(int sector) {
-        return 0;
+        return (sector * 87) % this.numCilindros;
     }
 
     /**
