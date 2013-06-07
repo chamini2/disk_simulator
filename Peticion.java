@@ -65,19 +65,12 @@ public class Peticion implements Comparable<Peticion>{
     }
 
     @Override
-    public int compareTo(T o) {
+    public int compareTo(Peticion p) {
 
-        Peticion p;
-        if (o instanceof Peticion) {
-            p = (Peticion) o;
-
-            if (this.tiempo > p.tiempo) {
-                return 1;
-            } else if (this.tiempo < p.tiempo) {
-                return -1;
-            } else {
-                return 0;
-            }
+        if (this.tiempo > p.tiempo) {
+            return 1;
+        } else if (this.tiempo < p.tiempo) {
+            return -1;
         } else {
             return 0;
         }

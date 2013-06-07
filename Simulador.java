@@ -51,7 +51,7 @@ public class Simulador {
 
     public int getClosestBlock() {
 
-        int track = disco.getTrackActual();
+        int track = disco.getCilindroActual();
         int distancia = disco.getNumCilindros();
         int minimo = track;
         int act;
@@ -62,7 +62,7 @@ public class Simulador {
         for (int i = 0; i < bloques.size(); i++) {
             este = bloques.get(i);
             sector = disco.buscarSectorParaBloque(este.getBloque());
-            act = disco.buscarTrackParaSector(sector);
+            act = disco.buscarCilindroParaSector(sector);
 
             act = Math.abs(act - track);
 

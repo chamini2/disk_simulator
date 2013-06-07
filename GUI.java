@@ -30,9 +30,10 @@ public class GUI extends JFrame {
         start = new JButton("Comenzar Simulación");
         start.addActionListener(new ActionListener () {
             public void actionPerformed(ActionEvent e){
+                System.out.println("Reloj "+menu.getReloj());
+                System.out.println("Diferencia "+menu.getDiferencia());
+                System.out.println("Densidad "+menu.getDensidad());
                 initUI();
-                Disco disco = new Disco(1073741824, 2, 512, 10, 1030, 700, 10, 7200);
-                simulador = new Simulador("./peticiones.xml", disco);
 
             }
         });
