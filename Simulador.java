@@ -72,6 +72,9 @@ public class Simulador implements Runnable {
                 System.out.println("DUrmiendo " + tiempo);
                 System.out.println("ticker " + reloj.getTicker());
 
+                System.out.println("Peticion atendida en ");
+                System.out.println("" + p.);.
+
                //Se duerme para simular tiempo
                 try {
                     Thread.sleep(tiempo);
