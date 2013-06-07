@@ -69,11 +69,13 @@ public class Simulador implements Runnable {
                 acc = bloques.remove(min);
                 tiempo = this.procesarBloque(acc.getBloque(), acc.getTipo(),p);
                 tiempo *= this.reloj.getTicker();
-                System.out.println("DUrmiendo " + tiempo);
-                System.out.println("ticker " + reloj.getTicker());
+                System.out.println("---------------------------------------");
+                //System.out.println("DUrmiendo " + tiempo);
+                //System.out.println("ticker " + reloj.getTicker());
 
                 System.out.println("Peticion atendida en ");
-                System.out.println("" + p.);.
+                System.out.println("p.sector" + (acc.getBloque() * 8));
+                System.out.println("cilindro" + disco.getCilindroActual());
 
                //Se duerme para simular tiempo
                 try {
