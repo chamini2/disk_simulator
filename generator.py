@@ -2,7 +2,7 @@
 import random
 
 
-def generate_list(num_bytes, pets, time, max_bl):
+def generate_list(num_bytes, pets, time, max_bl, lean=None):
     """Generates a list with tuples representing petitions
     returns a tuple of the form: (priority, time, [blocks], type)
     """
@@ -23,11 +23,18 @@ def generate_list(num_bytes, pets, time, max_bl):
         for _ in range(num_bl):
             blocks.append(random.randint(0, disk_bl))
 
-        kind = random.randint(0, 1)
-        if kind == 0:
-            kind = 'R'
-        else:
-            kind = 'W'
+        if not lean:
+            kind = random.randint(0, 1)
+            if kind == 0:
+                kind = 'R'
+            else:
+                kind = 'W'
+        elif lean == 'r':
+            kind = random.randint(0, )
+            if kind == 0:
+                kind = 'R'
+            else:
+                kind = 'W'
 
         petition = (priority, time, blocks, kind)
 
@@ -100,9 +107,9 @@ def main(argv = None):
     if argv is None:
         argv = sys.argv
 
-    if len(argv) != 5:
+    if len(argv) != 5 && len(argv) != 6:
         print "USAGE: python generador.py <bytes> <petitions>",
-        print "<time> <maximum blocks>"
+        print "<time> <maximum blocks> [<read/write>]"
         return
 
     num_bytes = argv[1]
@@ -122,6 +129,12 @@ def main(argv = None):
     if not time.isdigit():
         print "USAGE: <maximum blocks> must be a positive integer, ",
         print "indicating maximum number of blocks to be asked by a petition"
+
+    if len(argv) == 6:
+        lean = argv[5]
+        if lean.lower() != 'r' && lean.lower() != 'w':
+            print "USAGE: <read/write> must be 'r' or 'w'"
+
 
     num_bytes = int(num_bytes)
     petitions = int(petitions)

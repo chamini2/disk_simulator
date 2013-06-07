@@ -15,7 +15,7 @@ public class Simulador {
     Disco disco;
     static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
     PriorityQueue<Peticion> peticiones; //
-    List<Accion> bloques;              //  Bloques a leer
+    List<Accion> bloques;               //  Bloques a leer
 
     public Simulador(String file_disk, String file_petitions) {
 
@@ -31,7 +31,7 @@ public class Simulador {
 
         while ((!peticiones.isEmpty()) && (!bloques.isEmpty())) {
 
-            /* Si hay bloques que leer/escribir */
+            //Si hay bloques que leer/escribir
             if (!bloques.isEmpty()) {
 
                 acc = bloques.remove(0);
@@ -65,7 +65,7 @@ public class Simulador {
         return i;
     }
 
-	/*
+    /*
      * Parsea la informacion de un disco duro definida en un archivo
      * de configuracion
      */
@@ -130,7 +130,7 @@ public class Simulador {
         } catch (Exception e) {
             e.printStackTrace();
         }
-		return lista;
+        return lista;
     }
 
     /**
