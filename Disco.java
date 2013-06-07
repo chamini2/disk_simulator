@@ -2,60 +2,78 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Disco {
-    int capacidadDisco;             //  Tamano en bytes del disco duro
-    int capacidadPlatos;            //  Tamano en bytes de cada plato
-    int tamanoSector;               //  Tamano en bytes de cada sector del dd
-    int trackActual;                //  Track actual en la que esta posicionado el brazo
-    int densidad;                   //  Cantidad de tracks por centimetro de radio del plato
-    List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
 
-    int rpm;                        //  Revoluciones por minuto de los platos
+    int capacidadDisco;             //  Tamano en bytes del disco duro
+    int numPlatos;                  //  Numero de platos del disco duro
+    int tamanoSector;               //  Tamano en bytes de cada sector del dd
+    int numCilindros;               //  Numero de cilindros 
+    List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
+    int trackActual;                //  Track actual en la que esta posicionado el brazo
+    int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
+
+    //  Variables de performance del disco
     int averageSeekTime;            //  Tiempo promedio de mover el cabezal de un track al siguiente
-    float latenciaRotacional;       //  Tiempo promedio de espera para que leer o escribir un sector
-    int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos 
+    int tasaLectura;                //  tasa promedio de lectura del disco duro MB / milisegundos
     int tasaEscritura;              //  tasa promedio de escritura del disco duro MB / milisegundos
 
-    int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
     int sectoresPorTrack;           //  Cantidad de sectores existentes en cada track del disco duro
 
-    public Disco(int cs, int cd, int cp, int ts, int ta, int d,
-                 List<Cabezal> cbs, int rpm, int ast, float lr,
-                 int tl, int te, int dp) {
-        this.cilindros = cs;
+    int rpm;                        //  Revoluciones por minuto de los platos
+    float latenciaRotacional;       //  Tiempo promedio de espera para que leer o escribir un sector
+
+    /**
+      * Constructor
+      */
+    public Disco(int cd, int np, int ts, int ast, 
+                 int tl, int te, int dp, int rpm) {
         this.capacidadDisco = cd;
-        this.capacidadPlatos = cp;
+        this.numPlatos = np;
         this.tamanoSector = ts;
-        this.trackActual = ta;
-        this.densidad = d;
-        this.cabezales = cbs;
-        this.rpm = rpm;
         this.averageSeekTime = ast;
-        this.latenciaRotacional = 60 / this.rpm;
-        this.tasaLectura = tasaLectura / 1000;
-        this.tasaEscritura = tasaEscritura / 1000;
+        this.tasaLectura = tl / 1000;
+        this.tasaEscritura = te / 1000;
         this.diametroPlato = dp;
-        //this.sectoresPorTrack
+        this.rpm = rpm;
+        this.latenciaRotacional = 60 / this.rpm;
+
+        int numSectores = capacidadDisco / tamanoSector;
+        int sectoresPorPlato = numSectores / (numPlatos * 2);
     }
 
+    /**
+      * Devuelve el numero de pista sobre la cual se encuentra el brazo del
+      * disco actualmente
+      */
     public int getTrackActual() {
         return this.trackActual;
     }
 
+    /**
+      * Toma el numero de un sector del disco duro y consigue el tiempo
+      * tomado por el disco duro para leer o escribir sobre el
+      */
     public long procesarSector(int sector, char tipoAccion) {
         long total = 0;
-        Cabezal c = buscarCabezal(sectorAux);
-        int trackAux = buscarTrackParaSector(sectorAux);
+        Cabezal c = buscarCabezal(sector);
+        int trackAux = buscarTrackParaSector(sector);
 
         total += moverBrazo(trackAux);
-        total += efectuarAccion(sectorAux, tipoAccion);
+        total += efectuarAccion(tamanoSector, tipoAccion);
         return total;
     }
 
+    /**
+      *
+      */
     private long moverBrazo(int trackDestino) {
+        long distancia = Math.abs(trackDestino - trackActual);
         this.trackActual = trackDestino;
-        return Math.abs(trackDestino - trackActual) * averageSeekTime;
+        return distancia * averageSeekTime;
     }
 
+    /**
+      *
+      */
     private Cabezal buscarCabezal(int sector) {
         for (Cabezal c: this.cabezales) {
             if (c.min <= sector && sector < c.max)
@@ -64,20 +82,34 @@ public class Disco {
         return null;
     }
 
-    private long efectuarAccion(int sector, char tipo) {
+    /**
+      *
+      */
+    private long efectuarAccion(int tamanoSector, char tipo) {
         long total = 0;
         if (tipo == 'r')
-            total = sector / tasaLectura;
+            //  Calculo del tiempo de lectura del sector
+            //  Es relativo a la posicion del cabezal
+            total = tamanoSector / tasaLectura;
         else if (tipo == 'w')
-            total = sector / tasaEscritura;
+            //  Calculo del tiempo de escritura del sector
+            //  Es relativo a la posicion del cabezal
+            total = tamanoSector / tasaEscritura;
+        else
+            System.out.println("Disco.efectuarAccion: Error peticion mal definida");
         return total;
     }
 
+    /**
+      *
+      */
     private int buscarTrackParaSector(int sector) {
-        //  PENDIENTE
         return 0;
     }
 
+    /**
+      *
+      */
     private int buscarSectorParaBloque(int bloque) {
         return (bloque * 8) + 1;
     }

@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Collections;
 
 // Imports para lectura facil de XML
@@ -12,25 +11,77 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 public class Simulador {
-    Disco d;
-    static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
 
-	List<Peticion> peticiones; //  
+    private Disco disco;
+    private static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
 
-    public Simulador(Disco d) {
-        this.d = d;
-		this.peticiones = null;
+    PriorityQueue<Peticion> peticiones; //
+    List<Accion> bloques;              //  Bloques a leer
+
+    /**
+      *
+      */
+    public Simulador(String file_disk, String file_petitions) {
+
+        this.disco = leerDisco();
+        this.peticiones = leerPeticiones();
+        this.bloques = new ArrayList<Accion>();
     }
 
-    //private Disco parseDisco(String archivo_config) {
-        ////  Matteo
-        //return null;
-    //}
+    public void algoritmo() {
+
+        Accion acc;
+        long tiempo = 0;
+
+        while ((!peticiones.isEmpty()) && (!bloques.isEmpty())) {
+
+            /* Si hay bloques que leer/escribir */
+            if (!bloques.isEmpty()) {
+
+                acc = bloques.remove(0);
+                tiempo += this.procesarBloque(acc.getBloque(), acc.getTipo());
+
+            }
+        }
+    }
+
+    public int getClosestBlock() {
+
+        int track = disco.getTrackActual();
+        int distancia = disco.getNumCilindros();
+        int minimo = track;
+        int act;
+        Accion este;
+
+        // Busco el bloque en el track mas cercano
+        for (int i = 0; i < bloques.getLength(); i++) {
+            este = disco.buscarSectorParaBloque(bloques[i]);
+            act = disco.buscarTrackParaSector(este.getBloque());
+
+            act = Math.abs(act - track);
+
+            if (act < distancia) {
+                distancia = act;
+                minimo = i;
+            }
+        }
+
+        return i;
+    }
+
+	/*
+     * Parsea la informacion de un disco duro definida en un archivo
+     * de configuracion
+     */
+    private Disco leerDisco(String archivo_config) {
+
+        return null;
+    }
 
     /*
      * Modifica la variable 'peticiones'
      */
-    public void leerPeticiones(String xml) {
+    public PriorityQueue<Peticion> leerPeticiones(String xml) {
 
         try {
             File file = new File(xml);
@@ -41,7 +92,8 @@ public class Simulador {
             Element petE, blE;
             Node pet, bl;
 
-            this.peticiones = new ArrayList<Peticion>();
+            PriorityQueue<Peticion> lista = new PriorityQueue<Peticion>();
+
             Peticion in;
             String prioridad, tipo;
             int tiempo, bloque;
@@ -76,39 +128,39 @@ public class Simulador {
                         in.addBloque(bloque);
                     }
 
-                    peticiones.add(in);
+                    lista.add(in);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+		return lista;
     }
 
-
     /**
-      * Dado un numero de bloque devuelve el tiempo tomado por el disco duro 
-      * para leer o escribir dicho bloque
+      * Dado un numero de bloque del sistema de archivos devuelve el tiempo
+      * tomado por el disco duro para leer o escribir dicho bloque
       */
     private long procesarBloque(int bloque, char tipo) {
         int sector = d.buscarSectorParaBloque(bloque);
         return d.procesarSector(sector, tipo);
     }
 
-    //private long getHandleTime(Peticion p) {
-        //int total = 0;
+    // private long getHandleTime(Peticion p) {
+    //     int total = 0;
 
-        //List<Integer> dispatchQueue = new LinkedList<Integer>();
-        //Integer sector;
-        //for (Integer b: p.getBloques()) {
-            //sector = buscarSectorParaBloque(b);
-            //dispatchQueue.add(sector);
-        //}
+    //     List<Integer> dispatchQueue = new LinkedList<Integer>();
+    //     Integer sector;
+    //     for (Integer b: p.getBloques()) {
+    //         sector = buscarSectorParaBloque(b);
+    //         dispatchQueue.add(sector);
+    //     }
 
-        //Collections.sort(dispatchQueue);
+    //     Collections.sort(dispatchQueue);
 
-        //for (int sectorAux: dispatchQueue) {
-            //total += d.procesarSector(sectorAux, p.getTipo());
-        //}
-        //return total;
-    //}
+    //     for (int sectorAux: dispatchQueue) {
+    //         total += d.procesarSector(sectorAux, p.getTipo());
+    //     }
+    //     return total;
+    // }
 }
