@@ -120,7 +120,7 @@ public class Board extends JPanel {
         g2.draw(at.createTransformedShape(line));
 
         /*Se pinta el disco actual en la leyenda*/
-        this.pintarDisco(this.disco, Color.red);
+        this.pintarDisco(this.disco, Color.blue);
         /*Para seleccionar el segundo disco, se pinta el primero de blanco*/
         if (this.disco == 2)
             this.pintarDisco(1, Color.white);
@@ -169,15 +169,15 @@ public class Board extends JPanel {
 
         /*Transformacion de cabezal a brazo*/
         switch (cabezal){
-            case 1:
+            case 0:
                 brazo = 1;
                 break;
 
-            case 2:
+            case 1:
                 brazo = 2;
                 break;
 
-            case 3:
+            case 2:
                 brazo = 2;
                 break;
 
@@ -193,7 +193,7 @@ public class Board extends JPanel {
         /*Pinta el brazo*/
         for ( ; y0 <= limite; ++y0){
             line = new Line2D.Double(-330, y0 , -150, y1);
-            g2.draw(at.createTransformedShape(line));
+            this.g2.draw(at.createTransformedShape(line));
         }
 
 
@@ -208,7 +208,7 @@ public class Board extends JPanel {
         Arc2D arc;
 
         /*Se setea el color de relleno*/
-        g2.setColor(Color.yellow);
+        this.g2.setColor(Color.yellow);
         /*Ciclo que llena entre un track*/
         for(r = track*densidad, 
                 x=-400 + (this.TBP - track)*(densidad / 2), 
@@ -216,9 +216,9 @@ public class Board extends JPanel {
                 r > track*densidad - densidad + 0.1;
                 r-=1, x+= 0.5, y+=0.5){
             arc = new Arc2D.Double(x,y,r,r,0,360,1);
-            g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
+            this.g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
                 }
-        g2.setColor(Color.gray);
+        this.g2.setColor(Color.gray);
     }
 
     private void pintarDisco(int disco, Color color){
@@ -226,14 +226,16 @@ public class Board extends JPanel {
 
         Arc2D arc;
 
-        g2.setColor(color);
+        this.g2.setColor(color);
         /*Ciclo que pinta el disco 'disco'*/
         for (w = 250, h = 50, x = -300, y = 75 + 25 * disco;
                 w > 0; w -= 1, h -= 1, x += 0.5, y += 0.5){
             arc = new Arc2D.Double(x,y,w,h,0,360,1);
-            g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
+            this.g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
                 }
-        g2.setColor(Color.gray);
+        this.g2.setColor(Color.gray);
     }
+
+
 
 }

@@ -12,9 +12,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-public class Simulador {
+public class Simulador implements Runnable {
 
     private Disco disco;
+    private Reloj reloj;
     private static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
 
     private PriorityQueue<Peticion> peticiones; //
@@ -23,30 +24,62 @@ public class Simulador {
     /**
       *
       */
-    public Simulador(String file_petitions, Disco disco) {
+    public Simulador(String file_petitions, Disco disco, Reloj reloj) {
 
         this.disco = disco;
+        this.reloj = reloj;
         this.peticiones = leerPeticiones(file_petitions);
         this.bloques = new ArrayList<Accion>();
     }
 
-    public void algoritmo() {
+    public void run() {
 
+        try{
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            System.out.println("Interrumpido");
+        }
         Accion acc;
+        Peticion p = null;
         long tiempo = 0;
         int min;
+        int estado[];
 
-        while ((!peticiones.isEmpty()) && (!bloques.isEmpty())) {
+        while (!peticiones.isEmpty()) {
+
+            /*Reviso si la peticion esta en tiempo*/
+            p = peticiones.peek();
+            if (p == null) {
+                break;
+            }
+
+            if (this.reloj.getTiempo() >= p.getTiempo()) {
+                peticiones.poll();
+                /*Se agregan acciones a la lista de bloques*/
+                for (int bloq : p.getBloques()) {
+                    acc = new Accion(bloq, p.getTipo());
+                    bloques.add(acc);
+                }
+            }
 
             //Si hay bloques que leer/escribir
-            if (!bloques.isEmpty()) {
+            while (!bloques.isEmpty()) {
 
                 min = this.getClosestBlock();
                 acc = bloques.remove(min);
-                tiempo += this.procesarBloque(acc.getBloque(), acc.getTipo());
+                tiempo = this.procesarBloque(acc.getBloque(), acc.getTipo(),p);
 
+               //Se duerme para simular tiempo
+                try {
+                    Thread.sleep(tiempo);
+                } catch (InterruptedException e){
+                    System.out.println("Sleep interrumpido.");
+                }
             }
         }
+
+        p.setTiempo(-1);
+        disco.setValues(-1,-1,-1,p);
     }
 
     public int getClosestBlock() {
@@ -116,11 +149,11 @@ public class Simulador {
                     petE = (Element) pet;
 
                     prioridad = petE.getElementsByTagName("priority")
-                                .item(0).getTextContent();
+                        .item(0).getTextContent();
                     tiempo = Integer.parseInt(petE.getElementsByTagName("time")
-                                              .item(0).getTextContent());
+                            .item(0).getTextContent());
                     tipo = petE.getElementsByTagName("type")
-                           .item(0).getTextContent();
+                        .item(0).getTextContent();
 
                     in = new Peticion(tiempo, tipo, prioridad);
 
@@ -144,12 +177,12 @@ public class Simulador {
     }
 
     /**
-      * Dado un numero de bloque del sistema de archivos devuelve el tiempo
-      * tomado por el disco duro para leer o escribir dicho bloque
-      */
-    private long procesarBloque(int bloque, char tipo) {
+     * Dado un numero de bloque del sistema de archivos devuelve el tiempo
+     * tomado por el disco duro para leer o escribir dicho bloque
+     */
+    private long procesarBloque(int bloque, char tipo, Peticion p) {
         int sector = disco.buscarSectorParaBloque(bloque);
-        return disco.procesarSector(sector, tipo);
+        return disco.procesarSector(sector, tipo, p);
     }
 
     // private long getHandleTime(Peticion p) {
