@@ -7,11 +7,13 @@ import javax.swing.JTextArea;
 import javax.swing.BoxLayout;
 import javax.swing.text.DefaultCaret;
 public class GUI extends JFrame {
+    private static final long serialVersionUID = 1L;
     private Board contentPane;
     private Grafico grafo;
     private JTextArea textArea;
     private JScrollPane scrollPaneGr;
     private Menu menu;
+    private Simulador simulador;
 
     public GUI(int TBP){
         initMenu();
@@ -28,10 +30,10 @@ public class GUI extends JFrame {
         start = new JButton("Comenzar Simulación");
         start.addActionListener(new ActionListener () {
             public void actionPerformed(ActionEvent e){
-                System.out.println("Reloj: "+menu.getReloj());
-                System.out.println("Diferencia: "+menu.getDiferencia());
-                System.out.println("Densidad: "+menu.getDensidad());
-                initUI(50);
+                initUI();
+                Disco disco = new Disco(1073741824, 2, 512, 10, 1030, 700, 10, 7200);
+                simulador = new Simulador("./peticiones.xml", disco);
+
             }
         });
 
@@ -49,12 +51,12 @@ public class GUI extends JFrame {
 
    
     /*Inicializa la interfaz*/
-    private final void initUI(int TBP){
+    private final void initUI(){
         JScrollPane scrollPaneLog;
         DefaultCaret caret;
 
         /*Panel general*/
-        contentPane = new Board(TBP, 150);
+        contentPane = new Board(50, 1000);
         contentPane.setPreferredSize(new Dimension(900, 700));
         setContentPane(contentPane);
 

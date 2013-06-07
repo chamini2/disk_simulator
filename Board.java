@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel {
 
+    private static final long serialVersionUID = 2L;
     private int disco, sector, cabezal;
     private Graphics2D g2;
     private AffineTransform at;

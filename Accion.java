@@ -1,7 +1,7 @@
 public class Accion {
 
-    int bloque;
-    char tipo;
+    private int bloque;
+    private char tipo;
 
     public Accion(int bl, char ti) {
         this.bloque = bl;

@@ -1,4 +1,6 @@
 import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 
 // Imports para lectura facil de XML
@@ -15,16 +17,16 @@ public class Simulador {
     private Disco disco;
     private static int tamano_bloque = 4096;    //  Tamano de bloques de ext4
 
-    PriorityQueue<Peticion> peticiones; //
-    List<Accion> bloques;               //  Bloques a leer
+    private PriorityQueue<Peticion> peticiones; //
+    private ArrayList<Accion> bloques;               //  Bloques a leer
 
     /**
       *
       */
-    public Simulador(String file_disk, String file_petitions) {
+    public Simulador(String file_petitions, Disco disco) {
 
-        this.disco = leerDisco();
-        this.peticiones = leerPeticiones();
+        this.disco = disco;
+        this.peticiones = leerPeticiones(file_petitions);
         this.bloques = new ArrayList<Accion>();
     }
 
@@ -53,12 +55,14 @@ public class Simulador {
         int distancia = disco.getNumCilindros();
         int minimo = track;
         int act;
+        int sector;
         Accion este;
 
         // Busco el bloque en el track mas cercano
-        for (int i = 0; i < bloques.getLength(); i++) {
-            este = disco.buscarSectorParaBloque(bloques[i]);
-            act = disco.buscarTrackParaSector(este.getBloque());
+        for (int i = 0; i < bloques.size(); i++) {
+            este = bloques.get(i);
+            sector = disco.buscarSectorParaBloque(este.getBloque());
+            act = disco.buscarTrackParaSector(sector);
 
             act = Math.abs(act - track);
 
@@ -68,7 +72,7 @@ public class Simulador {
             }
         }
 
-        return i;
+        return minimo;
     }
 
     /*
@@ -84,6 +88,7 @@ public class Simulador {
      * Modifica la variable 'peticiones'
      */
     public PriorityQueue<Peticion> leerPeticiones(String xml) {
+        PriorityQueue<Peticion> lista = new PriorityQueue<Peticion>();
 
         try {
             File file = new File(xml);
@@ -94,7 +99,6 @@ public class Simulador {
             Element petE, blE;
             Node pet, bl;
 
-            PriorityQueue<Peticion> lista = new PriorityQueue<Peticion>();
 
             Peticion in;
             String prioridad, tipo;
@@ -144,8 +148,8 @@ public class Simulador {
       * tomado por el disco duro para leer o escribir dicho bloque
       */
     private long procesarBloque(int bloque, char tipo) {
-        int sector = d.buscarSectorParaBloque(bloque);
-        return d.procesarSector(sector, tipo);
+        int sector = disco.buscarSectorParaBloque(bloque);
+        return disco.procesarSector(sector, tipo);
     }
 
     // private long getHandleTime(Peticion p) {

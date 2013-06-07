@@ -10,6 +10,8 @@ public class Disco {
     List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
     int trackActual;                //  Track actual en la que esta posicionado el brazo
     int diametroPlato;              //  Diametro de cada plato del disco duro, medido en centimetros
+    int platoActual;                //  Plato actual para pintar en interfaz
+    int cabezalActual;              // Cabezal actual para pintar en interfaz
 
     //  Variables de performance del disco
     int averageSeekTime;            //  Tiempo promedio de mover el cabezal de un track al siguiente
@@ -35,9 +37,10 @@ public class Disco {
         this.diametroPlato = dp;
         this.rpm = rpm;
         this.latenciaRotacional = 60 / this.rpm;
-
+        this.plato = 1;
         int numSectores = capacidadDisco / tamanoSector;
         int sectoresPorPlato = numSectores / (numPlatos * 2);
+
     }
 
     /**
@@ -46,6 +49,14 @@ public class Disco {
       */
     public int getTrackActual() {
         return this.trackActual;
+    }
+
+    /**
+      *
+      *
+      */
+    public int getNumCilindros(){
+        return this.numCilindros;
     }
 
     /**
@@ -103,14 +114,33 @@ public class Disco {
     /**
       *
       */
-    private int buscarTrackParaSector(int sector) {
+    public int buscarTrackParaSector(int sector) {
         return (sector * 87) % this.numCilindros;
     }
 
     /**
       *
       */
-    private int buscarSectorParaBloque(int bloque) {
+    public int buscarSectorParaBloque(int bloque) {
         return (bloque * 8) + 1;
+    }
+
+
+    /*Monitor*/
+    public synchronized void setValues(int trackActual, int plato, int cabezal) {
+        this.trackActual   = trackActual;
+        this.platoActual   = plato;
+        this.cabezalActual = cabezal;
+    }
+
+
+    public synchronized int[] getValues(){
+        int values[] = new int[3];
+
+        values[0] = this.trackActual;
+        values[1] = this.platoActual;
+        values[2] = this.cabezalActual;
+
+        return values;
     }
 }

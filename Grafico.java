@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Grafico extends JPanel {
+    private static final long serialVersionUID = 3L;
     private Punto punto;                //Posicion del ultimo punto dibujado (si es que existe)
     private int sectores;               //Cantidad de sectores para posicionar los puntos
     private int length;                 //Largo del eje de referencia para el grafo

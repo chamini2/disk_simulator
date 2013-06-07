@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.io.*;
 
 public class Menu extends JPanel{
+    private static final long serialVersionUID = 4L;
     private int reloj;          //Tic del reloj en milisegundos
     private int densidad;       //Cantidad de peticiones por unidad de tiempo
     private String diferencia;  //Diferencia entre peticiones read y write

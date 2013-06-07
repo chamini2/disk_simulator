@@ -2,21 +2,31 @@ import java.lang.Thread;
 
 public class Reloj implements Runnable {
 
-    int ticker;     // Cada cuanto pasa una unidad de tiempo, en milisegundos
+    private int ticker;     // Cada cuanto pasa una unidad de tiempo, en milisegundos
+    private int tiempo;
 
-    Reloj(int ticker) {
+    public Reloj(int ticker) {
         this.ticker = ticker;
+        this.tiempo = 0;
     }
 
-    public void tick() {
+
+    
+    /*getter*/
+    public int getTiempo() {
+        return this.tiempo;
+    }
+
+    public void run() {
 
         while (true) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(this.ticker);
             } catch (InterruptedException e){
                 System.out.println("Sleep interrumpido.");
             }
-            notifyAll()
+            ++this.tiempo;
+            System.out.println("Tiempo: "+this.tiempo);
         }
     }
 }
