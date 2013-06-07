@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.JTextArea;
@@ -8,14 +9,45 @@ import javax.swing.text.DefaultCaret;
 public class GUI extends JFrame {
     private Board contentPane;
     private Grafico grafo;
-    private JPanel log;
     private JTextArea textArea;
     private JScrollPane scrollPaneGr;
+    private Menu menu;
 
     public GUI(int TBP){
-        initUI(TBP);
+        initMenu();
     }
 
+    /*Genera el Menu*/
+    private final void initMenu(){
+        menu = new Menu();
+        Dimension tam;
+        JButton start;
+        menu.setPreferredSize(new Dimension(900,700));
+        menu.setLayout(null);
+        setContentPane(menu);
+        start = new JButton("Comenzar Simulación");
+        start.addActionListener(new ActionListener () {
+            public void actionPerformed(ActionEvent e){
+                System.out.println("Reloj: "+menu.getReloj());
+                System.out.println("Diferencia: "+menu.getDiferencia());
+                System.out.println("Densidad: "+menu.getDensidad());
+                initUI(50);
+            }
+        });
+
+        menu.add(start);
+        tam = start.getPreferredSize();
+        start.setBounds(450 - (tam.width / 2),600,tam.width,tam.height);
+
+
+        pack();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+    }
+
+   
     /*Inicializa la interfaz*/
     private final void initUI(int TBP){
         JScrollPane scrollPaneLog;
