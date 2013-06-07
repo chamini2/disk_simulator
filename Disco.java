@@ -50,8 +50,7 @@ public class Disco {
         this.cabezalActual      = 0;
     }
 
-
-    public String toString(){
+    public String toString() {
         String s = "Disco"
             + "capacidad: "+this.capacidadDisco
             + "sectoresPorCara "+this.sectoresPorCara
