@@ -44,6 +44,23 @@ public class Menu extends JPanel{
         Rectangle rec;
         Dimension tam;
         ActionListener action;
+        JLabel integrantes = new JLabel("Integrantes: ");
+        JLabel juan = new JLabel("Juan C. Arocha");
+        JLabel german = new JLabel("German Leon Z");
+        JLabel matteo = new JLabel("Matteo J. Ferrando");
+        integrantes.setFont(new Font("Serif", Font.PLAIN, 20));
+        juan.setFont(new Font("Serif", Font.PLAIN, 20));
+        german.setFont(new Font("Serif", Font.PLAIN, 20));
+        matteo.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        tam = integrantes.getPreferredSize();
+        integrantes.setBounds(450 - (tam.width / 2) + 50 , 280, tam.width, tam.height);
+        tam = juan.getPreferredSize();
+        juan.setBounds(450 - (tam.width / 2) + 50 , 280 + 30, tam.width, tam.height);
+        tam = german.getPreferredSize();
+        german.setBounds(450 - (tam.width / 2) + 50 , 280 + 60 , tam.width, tam.height);
+        tam = matteo.getPreferredSize();
+        matteo.setBounds(450 - (tam.width / 2) + 50 , 280 + 91, tam.width, tam.height);
 
         /*Selects*/
         ticReloj = new JComboBox<String>(tics);
@@ -58,6 +75,10 @@ public class Menu extends JPanel{
         descDif = new JLabel("Relación Escritura/Lectura");
 
         /*Se agregan al Panel*/
+        add(integrantes);
+        add(german);
+        add(juan);
+        add(matteo);
         add(title);
         add(descTic);
         add(ticReloj);
