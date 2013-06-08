@@ -44,6 +44,13 @@ public class Simulador implements Runnable {
         long tiempo = 0;
         int min;
         int estado[];
+        int reads = 0;
+        int writes = 0; 
+        int tiempoWrites = 0;
+        int tiempoReads = 0;
+        int tiempoTotal = 0;
+        long tiempoAnterior = 0;
+        boolean b;
 
         while (!peticiones.isEmpty()) {
 
@@ -62,16 +69,32 @@ public class Simulador implements Runnable {
                 }
             }
 
+            b = false;
+            if (bloques.isEmpty()){
+                tiempoAnterior = this.reloj.getTiempo();
+                b = true;
+            }
             //Si hay bloques que leer/escribir
             while (!bloques.isEmpty()) {
-
+                
                 min = this.getClosestBlock();
                 acc = bloques.remove(min);
+                p.setTiempo(this.reloj.getTiempo());
                 tiempo = this.procesarBloque(acc.getBloque(), acc.getTipo(),p);
                 tiempo *= this.reloj.getTicker();
                 System.out.println("---------------------------------------");
                 //System.out.println("DUrmiendo " + tiempo);
                 //System.out.println("ticker " + reloj.getTicker());
+
+                if (acc.getTipo() == 'R') {
+                    ++reads;
+                    tiempoReads += tiempo;
+                    tiempoTotal += tiempo;
+                } else {
+                    ++writes;
+                    tiempoWrites += tiempo;
+                    tiempoTotal += tiempo;
+                }
 
                 System.out.println("Peticion atendida en ");
                 System.out.println("p.sector" + (acc.getBloque() * 8));
@@ -84,10 +107,15 @@ public class Simulador implements Runnable {
                     System.out.println("Sleep interrumpido.");
                 }
             }
+            if (b)
+                tiempoTotal += this.reloj.getTiempo() - tiempoAnterior;
         }
 
+        //  Estadisticas
         p.setTiempo(-1);
         disco.setValues(-1,-1,-1,p);
+
+        disco.setEstadisticas(reads, writes, tiempoReads, tiempoWrites, tiempoTotal);
     }
 
     public int getClosestBlock() {

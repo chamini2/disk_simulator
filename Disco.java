@@ -23,6 +23,7 @@ public class Disco {
     int platoActual;                //  Plato actual para pintar en interfaz
     int cabezalActual;              // Cabezal actual para pintar en interfaz
     Peticion actual;
+    int esta[];
 
     //  Temporal
     //List<Cabezal> cabezales;        //  Lista de cabezales del disco duro
@@ -50,6 +51,7 @@ public class Disco {
         this.cilindroActual     = 0;
         this.platoActual        = 0;
         this.cabezalActual      = 0;
+        this.esta               = new int[5];
     }
 
     public String toString() {
@@ -59,6 +61,10 @@ public class Disco {
             + "tamanoSector "+this.tamanoSector
             + "sectoresPorTrack "+this.sectoresPorTrack;
         return s;
+    }
+
+    public int getSectoresPorTrack() {
+        return this.sectoresPorTrack;
     }
 
     /**
@@ -194,6 +200,18 @@ public class Disco {
         values[2] = this.cabezalActual;
 
         return values;
+    }
+
+    public synchronized int[] getEstadisticas() {
+        return this.esta;
+    }
+
+    public synchronized void setEstadisticas(int w, int r, int tw, int tr, int t) {
+        this.esta[0] = w;
+        this.esta[1] = r;
+        this.esta[2] = tw;
+        this.esta[3] = tr;
+        this.esta[4] = t - (tw + tr);
     }
 
     /**

@@ -10,8 +10,6 @@ public class Reloj implements Runnable {
         this.tiempo = 0;
     }
 
-
-    
     /*getter*/
     public int getTiempo() {
         return this.tiempo;

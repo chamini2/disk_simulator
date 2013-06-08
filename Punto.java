@@ -1,9 +1,9 @@
 public class Punto{
-    private int x;      //Coordenada X
-    private int y;      //Coordenada Y
+    private double x;      //Coordenada X
+    private double  y;      //Coordenada Y
     private int sector; //Sector al que corresponde
 
-    public Punto(int x, int y, int sector){
+    public Punto(double x, double y, int sector){
         this.x      = x;
         this.y      = y;
         this.sector = sector;
@@ -11,11 +11,11 @@ public class Punto{
 
 
     /*Getters*/
-    public int getX(){
+    public double getX(){
         return this.x;
     }
 
-    public int getY(){
+    public double getY(){
         return this.y;
     }
 

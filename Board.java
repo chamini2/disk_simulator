@@ -13,7 +13,7 @@ public class Board extends JPanel {
     private int TBP;
     private int sectores;
     
-    public Board(int TBP, int sectores){
+    public Board(int TBP, int sectores) {
         super(null);
         setBackground(Color.WHITE);
         this.track    = 3; //Pista pintada por default
@@ -28,7 +28,7 @@ public class Board extends JPanel {
         return this.track;
     }
 
-    public void setTrack(int track){
+    public void setTrack(int track) {
         this.track = track;
     }
 
@@ -122,8 +122,8 @@ public class Board extends JPanel {
         /*Se pinta el disco actual en la leyenda*/
         this.pintarDisco(this.disco, Color.blue);
         /*Para seleccionar el segundo disco, se pinta el primero de blanco*/
-        if (this.disco == 2)
-            this.pintarDisco(1, Color.white);
+        if (this.disco == 1)
+            this.pintarDisco(0, Color.white);
 
         /*Dibuja los brazos */
         this.dibujarBrazo(1);
@@ -144,6 +144,10 @@ public class Board extends JPanel {
 
         }
 
+    }
+
+    public int getSector() {
+        return this.sector;
     }
 
     /*Dibuja un brazo sobre la leyenda*/
@@ -229,14 +233,12 @@ public class Board extends JPanel {
 
         this.g2.setColor(color);
         /*Ciclo que pinta el disco 'disco'*/
-        for (w = 250, h = 50, x = -300, y = 75 + 25 * disco;
+        for (w = 250, h = 50, x = -300, y = 75 + 25 * (disco + 1);
                 w > 0; w -= 1, h -= 1, x += 0.5, y += 0.5){
             arc = new Arc2D.Double(x,y,w,h,0,360,1);
             this.g2.draw(at.createTransformedShape(arc)); //Dibuja la forma transformada con precision double
                 }
         this.g2.setColor(Color.gray);
     }
-
-
 
 }

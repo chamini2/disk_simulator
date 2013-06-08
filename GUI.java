@@ -6,6 +6,10 @@ import javax.swing.JViewport;
 import javax.swing.JTextArea;
 import javax.swing.BoxLayout;
 import javax.swing.text.DefaultCaret;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+
 public class GUI extends JFrame {
     private static final long serialVersionUID = 1L;
     private Board contentPane;
@@ -19,6 +23,10 @@ public class GUI extends JFrame {
     public GUI(Disco disco){
         this.disco = disco;
         initMenu();
+    }
+
+    public int getSector(){
+        return this.contentPane.getSector();
     }
 
     /*Genera el Menu*/
@@ -62,8 +70,49 @@ public class GUI extends JFrame {
                 int tick      = menu.getReloj();
                 String dif    = menu.getDiferencia();
                 int den       = menu.getDensidad();
+                int repeticiones, tiempo;
 
                 //Aqui se genera el xml con densidad y diferencia
+
+                String au = null;
+                switch (den) {
+                    case -1:
+                        repeticiones = 5;
+                        tiempo = 500;
+                        break;
+                    case 1:
+                        repeticiones = 150;
+                        tiempo = 500;
+                        break;
+                    default:
+                        repeticiones = 50;
+                        tiempo = 500;
+                }
+
+                if (dif == null) {
+                    dif = "";
+                }
+
+                try {
+                    // comando a correr
+                    au = "python generator.py <bytes> <petitions> <time> <maximum blocks> [<read/write>]";
+                    au = "python generator.py  1073741824 " + repeticiones + " " + tiempo + " 5 " + dif;
+                    Process p = Runtime.getRuntime().exec(au);
+
+                    BufferedReader stdOutput =
+                        new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+                    PrintWriter writer = new PrintWriter("./archivo.xml", "UTF-8");
+
+                    while ((au = stdOutput.readLine()) != null) {
+                       writer.println(au);
+                    }
+
+                    writer.close();
+
+                } catch (Exception ex) {
+                    return;
+                }
 
                 Reloj reloj   = new Reloj(tick);
                 Simulador s   = new Simulador("./archivo.xml", disco, reloj);
@@ -99,7 +148,7 @@ public class GUI extends JFrame {
 
 
         /*Scrolling para grafico de requests*/
-        this.grafo = new Grafico(150);
+        this.grafo = new Grafico(this.disco.getNumCilindros());
         this.grafo.setPreferredSize(new Dimension(340, 260));
         this.grafo.setBackground(Color.WHITE);
         scrollPaneGr = new JScrollPane(grafo,
@@ -189,7 +238,7 @@ public class GUI extends JFrame {
         cambiarDisco(values[1]);
         cambiarCabezal(values[2]);
         if (values[3] != -1) {
-            agregarRegistro("Peticion atendida en tiempo "+values[3]);
+            agregarRegistro("Peticion atendida en " + values[3] + " milisegundos");
         }
         pintarPeticion(values[0]);
         return true;

@@ -9,7 +9,7 @@ import java.util.Collections;
 public class Grafico extends JPanel {
     private static final long serialVersionUID = 3L;
     private Punto punto;                //Posicion del ultimo punto dibujado (si es que existe)
-    private int sectores;               //Cantidad de sectores para posicionar los puntos
+    private double sectores;               //Cantidad de sectores para posicionar los puntos
     private int length;                 //Largo del eje de referencia para el grafo
     private AffineTransform at;         //Transformador para dibujos 2D
     private Graphics2D g2;              //Grafico a pintar
@@ -21,9 +21,7 @@ public class Grafico extends JPanel {
         this.punto = null;
         this.puntos = new ArrayList<Punto>();
         this.length = 300;
-        this.sectores = this.length / sectores;
-
-
+        this.sectores = sectores;
     }
 
     /*Getter punto*/
@@ -31,12 +29,10 @@ public class Grafico extends JPanel {
         return this.punto;
     }
 
-
-    
-    
     /*Metodo que pinta los puntos del arraylist*/
     private void pintarPuntos(){
-        int x, y, i, length;
+        double x;
+        int y, i, length;
         Punto anterior = null;
 
         length = this.puntos.size();
@@ -45,9 +41,9 @@ public class Grafico extends JPanel {
             x = this.puntos.get(i).getX();
             y = 15 + (length - (i + 1)) * 15;
             this.puntos.get(i).setY(y);
-            g2.drawString(""+this.puntos.get(i).getSector(), x, y-5);
+            g2.drawString(""+this.puntos.get(i).getSector(), (int) x, y-5);
             g2.setColor(Color.blue);
-            g2.fillOval(x,y,5,5);
+            g2.fillOval((int) x,y,5,5);
             if (anterior != null){
 
                 this.contectarPuntos(anterior, this.puntos.get(i));
@@ -61,7 +57,7 @@ public class Grafico extends JPanel {
     private void contectarPuntos(Punto a, Punto b){
         Line2D line;
         Dimension d;
-        int x1, y1, x2, y2, w, h;
+        double x1, y1, x2, y2, w, h;
 
         d = this.getPreferredSize();
         w = (int)d.getWidth() / 2;
@@ -112,12 +108,15 @@ public class Grafico extends JPanel {
     /*Agrega punto de peticion de sector al arraylist de puntos*/
     public void agregarPunto(int sector){
         Punto p;
-        int x, y;
+        double x, ubicacion;
+        int y;
 
         /*Se calcula la posicion del sector*/
-        x = sector * this.sectores; 
+        ubicacion = this.length * sector;
+        ubicacion /= this.sectores;
+        x = ubicacion;
         y = this.puntos.size();     //El indice en el cual fue agregado el punto
-        p = new Punto(x,y,sector);
+        p = new Punto(x,(double)y,sector);
         if (y == 0)
             this.punto = p;
         this.puntos.add(p);
