@@ -77,16 +77,16 @@ public class GUI extends JFrame {
                 String au = null;
                 switch (den) {
                     case -1:
-                        repeticiones = 5;
-                        tiempo = 500;
+                        repeticiones = 4;
+                        tiempo = 200;
                         break;
                     case 1:
-                        repeticiones = 150;
-                        tiempo = 500;
+                        repeticiones = 100;
+                        tiempo = 200;
                         break;
                     default:
-                        repeticiones = 50;
-                        tiempo = 500;
+                        repeticiones = 20;
+                        tiempo = 200;
                 }
 
                 if (dif == null) {

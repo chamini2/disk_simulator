@@ -31,11 +31,17 @@ def generate_list(num_bytes, pets, time, max_bl, lean=None):
             else:
                 kind = 'W'
         elif lean == 'r':
-            kind = random.randint(0, )
-            if kind == 0:
+            kind = random.randint(0, 99)
+            if kind < 75:
                 kind = 'R'
             else:
                 kind = 'W'
+        elif lean == 'r':
+            kind = random.randint(0, 99)
+            if kind < 75:
+                kind = 'W'
+            else:
+                kind = 'R'
 
         petition = (priority, time, blocks, kind)
 
