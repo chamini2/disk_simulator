@@ -1,7 +1,7 @@
 Hard drive simulator
 ====================
 
-Hard drive GUI simulator.
+Hard drive GUI simulator of Shortest Seek Time First (SSTF) scheduling.
 
 Requirements:
 
